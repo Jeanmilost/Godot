@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bjhebkbi2sx70"]
+
+[ext_resource type="Script" path="res://source code/laure.gd" id="1_0ucmg"]
+[ext_resource type="PackedScene" uid="uid://c6ihgveoaudtx" path="res://scenes/laure_model.tscn" id="1_sxkw2"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_t8hp4"]
+radius = 0.263878
+height = 1.71339
+
+[node name="Laure" type="CharacterBody3D"]
+script = ExtResource("1_0ucmg")
+
+[node name="Pivot" type="Node3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+
+[node name="Model" parent="Pivot" instance=ExtResource("1_sxkw2")]
+
+[node name="Collider" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0120499, 0.74683, 0.0514069)
+shape = SubResource("CapsuleShape3D_t8hp4")

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://begm1hmhg6gbh"]
+
+[ext_resource type="PackedScene" uid="uid://dgw7gtb0fstom" path="res://assets/models/warehouse/abandoned_warehouse_-_interior_scene.glb" id="1_niqj0"]
+
+[node name="warehouse" instance=ExtResource("1_niqj0")]
+
+[node name="Sketchfab_model" parent="." index="0"]
+transform = Transform3D(3.50966, 0, 0, 0, 7.79301e-16, 3.50966, 0, -3.50966, 7.79301e-16, 0, 2.90734, 0)

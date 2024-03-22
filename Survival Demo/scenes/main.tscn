@@ -1,0 +1,214 @@
+[gd_scene load_steps=14 format=3 uid="uid://i134isrh8srx"]
+
+[ext_resource type="PackedScene" uid="uid://begm1hmhg6gbh" path="res://scenes/warehouse.tscn" id="1_jepeo"]
+[ext_resource type="PackedScene" uid="uid://bjhebkbi2sx70" path="res://scenes/laure.tscn" id="2_4syor"]
+[ext_resource type="Script" path="res://source code/laure.gd" id="3_rl1hu"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_12tdt"]
+sky_horizon_color = Color(0.832525, 0.851735, 0.873775, 1)
+sky_energy_multiplier = 0.8
+ground_bottom_color = Color(0.945098, 0.952941, 0.945098, 1)
+ground_horizon_color = Color(0.832525, 0.851735, 0.873775, 1)
+
+[sub_resource type="Sky" id="Sky_vyev0"]
+sky_material = SubResource("ProceduralSkyMaterial_12tdt")
+
+[sub_resource type="Environment" id="Environment_mhdq1"]
+background_mode = 1
+background_color = Color(0.639216, 0.639216, 0.639216, 1)
+background_energy_multiplier = 0.8
+sky = SubResource("Sky_vyev0")
+ambient_light_color = Color(0.717647, 0.717647, 0.717647, 1)
+ambient_light_sky_contribution = 0.5
+reflected_light_source = 2
+tonemap_mode = 2
+ssao_enabled = true
+glow_enabled = true
+volumetric_fog_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_al87o"]
+size = Vector3(77.5267, 6.04298, 48.0019)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yvony"]
+size = Vector3(34.9262, 10.2566, 0.665955)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_t5acp"]
+size = Vector3(24.2565, 8.68555, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nabr4"]
+size = Vector3(1, 9.52875, 12.606)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s74kq"]
+size = Vector3(1, 8.54041, 11.9017)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gq6bu"]
+size = Vector3(5.71887, 8.88519, 1.88672)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ecbd4"]
+size = Vector3(0.368164, 14.7008, 0.464355)
+
+[node name="Main" type="Node"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_mhdq1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.439939, -0.24753, 0.863239, 0, 0.961262, 0.275637, -0.898028, -0.121264, 0.422897, 0, 0, 0)
+light_energy = 0.5
+shadow_enabled = true
+
+[node name="Scene" type="Node3D" parent="."]
+
+[node name="Warehouse" parent="Scene" instance=ExtResource("1_jepeo")]
+
+[node name="Player" type="Node3D" parent="Scene"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 4.63379, 0.0335651, -3.37861)
+
+[node name="Colliders" type="Node3D" parent="Scene"]
+
+[node name="Ground" type="StaticBody3D" parent="Scene/Colliders"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.63756, 0, -5.59103)
+
+[node name="GroundCollider" type="CollisionShape3D" parent="Scene/Colliders/Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.31808, -3.03063, 0.147531)
+shape = SubResource("BoxShape3D_al87o")
+
+[node name="Wall1" type="StaticBody3D" parent="Scene/Colliders"]
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+
+[node name="WallCollider" type="CollisionShape3D" parent="Scene/Colliders/Wall1"]
+transform = Transform3D(1, 0, -0.000523596, 0, 1, 0, 0.000523596, 0, 1, 2.17522, 4.55545, -0.231165)
+shape = SubResource("BoxShape3D_yvony")
+
+[node name="Wall2" type="StaticBody3D" parent="Scene/Colliders"]
+transform = Transform3D(0.999999, 0, 0.00174533, 0, 1, 0, -0.00174533, 0, 0.999999, 0, 0, -11.9439)
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+
+[node name="WallCollider" type="CollisionShape3D" parent="Scene/Colliders/Wall2"]
+transform = Transform3D(0.999998, 0, -0.00174533, 0, 1, 0, 0.00174533, 0, 0.999998, -0.645988, 2.42851, -0.439168)
+shape = SubResource("BoxShape3D_t5acp")
+
+[node name="Wall3" type="StaticBody3D" parent="Scene/Colliders"]
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+
+[node name="WallCollider" type="CollisionShape3D" parent="Scene/Colliders/Wall3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.71, 4.09946, -5.9271)
+shape = SubResource("BoxShape3D_nabr4")
+
+[node name="Wall4" type="StaticBody3D" parent="Scene/Colliders"]
+
+[node name="WallCollider" type="CollisionShape3D" parent="Scene/Colliders/Wall4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.3628, 3.49774, -4.99588)
+shape = SubResource("BoxShape3D_s74kq")
+
+[node name="Entry" type="StaticBody3D" parent="Scene/Colliders"]
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+
+[node name="Collider" type="CollisionShape3D" parent="Scene/Colliders/Entry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.9421, 3.90402, -11.0102)
+shape = SubResource("BoxShape3D_gq6bu")
+
+[node name="Column1" type="StaticBody3D" parent="Scene/Colliders"]
+
+[node name="ColumnCollider" type="CollisionShape3D" parent="Scene/Colliders/Column1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6506, 3.21951, -9.83587)
+shape = SubResource("BoxShape3D_ecbd4")
+
+[node name="Column2" type="StaticBody3D" parent="Scene/Colliders"]
+
+[node name="ColumnCollider" type="CollisionShape3D" parent="Scene/Colliders/Column2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.18811, 1.58946, -9.83587)
+shape = SubResource("BoxShape3D_ecbd4")
+
+[node name="Column3" type="StaticBody3D" parent="Scene/Colliders"]
+
+[node name="ColumnCollider" type="CollisionShape3D" parent="Scene/Colliders/Column3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.02398, 0.872429, -9.83587)
+shape = SubResource("BoxShape3D_ecbd4")
+
+[node name="Column4" type="StaticBody3D" parent="Scene/Colliders"]
+
+[node name="ColumnCollider" type="CollisionShape3D" parent="Scene/Colliders/Column4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.856, 1.169, -9.83587)
+shape = SubResource("BoxShape3D_ecbd4")
+
+[node name="Camera" type="Camera3D" parent="Scene"]
+transform = Transform3D(0.183505, 0.570493, -0.80054, -6.92058e-09, 0.814369, 0.580348, 0.983019, -0.106497, 0.149441, -12.0085, 4.06506, -2.95721)
+
+[node name="Laure" parent="Scene" instance=ExtResource("2_4syor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.02286, 0, -4.12745)
+script = ExtResource("3_rl1hu")
+
+[node name="Lighting" type="Node" parent="."]
+
+[node name="Lamp 1" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0.0623726, 0.998053, 0, -0.998053, 0.0623726, 14.8644, 3.95915, -2.37221)
+light_energy = 5.0
+light_indirect_energy = 4.0
+shadow_enabled = true
+spot_range = 15.157
+spot_angle = 17.57
+
+[node name="Lamp 2" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, -0.0470192, 0.998894, 0, -0.998894, -0.0470192, 14.6762, 4.33143, -8.78903)
+light_energy = 5.0
+light_indirect_energy = 4.0
+shadow_enabled = true
+spot_range = 15.157
+spot_angle = 17.57
+
+[node name="Lamp 3" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, -0.0392248, 0.99923, 0, -0.99923, -0.0392248, 9.52388, 4.46317, -2.3583)
+light_energy = 5.0
+light_indirect_energy = 4.0
+shadow_enabled = true
+spot_range = 15.157
+spot_angle = 17.57
+
+[node name="Lamp 4" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0.0193371, 0.999813, 0, -0.999813, 0.0193371, 9.51376, 4.07735, -8.80844)
+light_energy = 5.0
+light_indirect_energy = 4.0
+shadow_enabled = true
+spot_range = 15.157
+spot_angle = 17.57
+
+[node name="Lamp 5" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0.102723, 0.99471, 0, -0.99471, 0.102723, 4.49876, 4.01871, -2.37314)
+light_energy = 5.0
+light_indirect_energy = 4.0
+shadow_enabled = true
+spot_range = 15.157
+spot_angle = 17.57
+
+[node name="Lamp 6" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0.0503316, 0.998733, 0, -0.998733, 0.0503316, 4.84203, 3.81876, -8.84697)
+light_energy = 5.0
+light_indirect_energy = 4.0
+shadow_enabled = true
+spot_range = 15.157
+spot_angle = 17.57
+
+[node name="Lamp 7" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0.0503316, 0.998733, 0, -0.998733, 0.0503316, -0.000177145, 3.73029, -2.34389)
+light_energy = 5.0
+light_indirect_energy = 4.0
+shadow_enabled = true
+spot_range = 15.157
+spot_angle = 17.57
+
+[node name="Lamp 8" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0.0503316, 0.998733, 0, -0.998733, 0.0503316, 0.108762, 3.43503, -8.83474)
+light_energy = 5.0
+light_indirect_energy = 4.0
+shadow_enabled = true
+spot_range = 15.157
+spot_angle = 17.57
