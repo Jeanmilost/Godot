@@ -9,6 +9,10 @@ extends CharacterBody3D
 const g_WalkingSpeed  = 1.5
 const g_RotationSpeed = 4
 
+###
+# Called every frame at a fixed rate, which allows any processing that requires the physics values
+#@param delta - elapsed time in seconds since the previous call
+##
 func _physics_process(delta):
 	# rotate the player
 	if Input.is_action_pressed("turn_right"):
