@@ -1,8 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://i134isrh8srx"]
+[gd_scene load_steps=13 format=3 uid="uid://i134isrh8srx"]
 
 [ext_resource type="PackedScene" uid="uid://begm1hmhg6gbh" path="res://scenes/warehouse.tscn" id="1_jepeo"]
 [ext_resource type="PackedScene" uid="uid://bjhebkbi2sx70" path="res://scenes/laure.tscn" id="2_4syor"]
-[ext_resource type="Script" path="res://source code/laure.gd" id="3_rl1hu"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_12tdt"]
 sky_horizon_color = Color(0.832525, 0.851735, 0.873775, 1)
@@ -145,7 +144,6 @@ transform = Transform3D(0.183505, 0.570493, -0.80054, -6.92058e-09, 0.814369, 0.
 
 [node name="Laure" parent="Scene" instance=ExtResource("2_4syor")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.02286, 0, -4.12745)
-script = ExtResource("3_rl1hu")
 
 [node name="Lighting" type="Node" parent="."]
 

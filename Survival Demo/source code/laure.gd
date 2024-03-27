@@ -43,8 +43,7 @@ func _physics_process(delta):
 	#	velocity.x = move_toward(velocity.x, 0, SPEED)
 	#	velocity.z = move_toward(velocity.z, 0, SPEED)
 
-	#if $AnimationTree != null:
-	#	$AnimationTree.set("parameters/conditions/idle", velocity == Vector3.ZERO)
-	#	$AnimationTree.set("parameters/conditions/walk", velocity != Vector3.ZERO)
+	$AnimationTree.set("parameters/conditions/isIdle",    velocity == Vector3.ZERO)
+	$AnimationTree.set("parameters/conditions/isWalking", velocity != Vector3.ZERO)
 	
 	move_and_slide()
