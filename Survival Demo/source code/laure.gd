@@ -1,27 +1,30 @@
 extends CharacterBody3D
 
-#const SPEED = 5.0
 #const JUMP_VELOCITY = 4.5
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 #var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-const g_PlayerSpeed = 5.0
+# player constants
+const g_WalkingSpeed  = 1.5
+const g_RotationSpeed = 4
 
 func _physics_process(delta):
+	# rotate the player
 	if Input.is_action_pressed("turn_right"):
-		rotation.y -= 0.1
+		rotation.y -= delta * g_RotationSpeed 
 	elif Input.is_action_pressed("turn_left"):
-		rotation.y += 0.1
+		rotation.y += delta * g_RotationSpeed
 
+	# move the player
 	if Input.is_action_pressed("move_forward"):
-		var direction = (transform.basis * Vector3(sin(rotation.y - (PI / 2.0)), 0.0, cos(rotation.y - (PI / 2.0))).normalized())
+		var direction = $Pivot.global_transform.basis.z.normalized()
 
-		velocity.x = direction.x * g_PlayerSpeed
-		velocity.z = direction.z * g_PlayerSpeed
+		velocity.x = direction.x * g_WalkingSpeed
+		velocity.z = direction.z * g_WalkingSpeed
 	else:
-		velocity.x = move_toward(velocity.x, 0.0, g_PlayerSpeed)
-		velocity.z = move_toward(velocity.z, 0.0, g_PlayerSpeed)
+		velocity.x = move_toward(velocity.x, 0.0, g_WalkingSpeed)
+		velocity.z = move_toward(velocity.z, 0.0, g_WalkingSpeed)
 
 	# Add the gravity.
 	#if not is_on_floor():
@@ -43,6 +46,7 @@ func _physics_process(delta):
 	#	velocity.x = move_toward(velocity.x, 0, SPEED)
 	#	velocity.z = move_toward(velocity.z, 0, SPEED)
 
+	# change the animation state depending on the user action
 	$AnimationTree.set("parameters/conditions/isIdle",    velocity == Vector3.ZERO)
 	$AnimationTree.set("parameters/conditions/isWalking", velocity != Vector3.ZERO)
 	
