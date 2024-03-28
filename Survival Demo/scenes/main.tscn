@@ -3,6 +3,27 @@
 [ext_resource type="PackedScene" uid="uid://begm1hmhg6gbh" path="res://scenes/warehouse.tscn" id="1_jepeo"]
 [ext_resource type="PackedScene" uid="uid://bjhebkbi2sx70" path="res://scenes/laure.tscn" id="2_4syor"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_al87o"]
+size = Vector3(77.5267, 6.04298, 48.0019)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yvony"]
+size = Vector3(34.9262, 10.2566, 0.665955)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_t5acp"]
+size = Vector3(24.2565, 8.68555, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nabr4"]
+size = Vector3(1, 9.52875, 12.606)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s74kq"]
+size = Vector3(1, 8.54041, 11.9017)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gq6bu"]
+size = Vector3(5.71887, 8.88519, 1.88672)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ecbd4"]
+size = Vector3(0.368164, 14.7008, 0.464355)
+
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_12tdt"]
 sky_horizon_color = Color(0.832525, 0.851735, 0.873775, 1)
 sky_energy_multiplier = 0.8
@@ -25,43 +46,82 @@ ssao_enabled = true
 glow_enabled = true
 volumetric_fog_enabled = true
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_al87o"]
-size = Vector3(77.5267, 6.04298, 48.0019)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_yvony"]
-size = Vector3(34.9262, 10.2566, 0.665955)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_t5acp"]
-size = Vector3(24.2565, 8.68555, 1)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_nabr4"]
-size = Vector3(1, 9.52875, 12.606)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_s74kq"]
-size = Vector3(1, 8.54041, 11.9017)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_gq6bu"]
-size = Vector3(5.71887, 8.88519, 1.88672)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ecbd4"]
-size = Vector3(0.368164, 14.7008, 0.464355)
-
 [node name="Main" type="Node"]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_mhdq1")
+[node name="Lighting" type="Node" parent="."]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.439939, -0.24753, 0.863239, 0, 0.961262, 0.275637, -0.898028, -0.121264, 0.422897, 0, 0, 0)
-light_energy = 0.5
+[node name="Lamp 1" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0.0623726, 0.998053, 0, -0.998053, 0.0623726, 14.8644, 3.95915, -2.37221)
+light_energy = 5.0
+light_indirect_energy = 4.0
+shadow_enabled = true
+spot_range = 15.157
+spot_angle = 17.57
+
+[node name="Lamp 2" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, -0.0470192, 0.998894, 0, -0.998894, -0.0470192, 14.6762, 4.33143, -8.78903)
+light_energy = 5.0
+light_indirect_energy = 4.0
+shadow_enabled = true
+spot_range = 15.157
+spot_angle = 17.57
+
+[node name="Lamp 3" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, -0.0392248, 0.99923, 0, -0.99923, -0.0392248, 9.52388, 4.46317, -2.3583)
+light_energy = 5.0
+light_indirect_energy = 4.0
+shadow_enabled = true
+spot_range = 15.157
+spot_angle = 17.57
+
+[node name="Lamp 4" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0.0193371, 0.999813, 0, -0.999813, 0.0193371, 9.51376, 4.07735, -8.80844)
+light_energy = 5.0
+light_indirect_energy = 4.0
+shadow_enabled = true
+spot_range = 15.157
+spot_angle = 17.57
+
+[node name="Lamp 5" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0.102723, 0.99471, 0, -0.99471, 0.102723, 4.49876, 4.01871, -2.37314)
+light_energy = 5.0
+light_indirect_energy = 4.0
+shadow_enabled = true
+spot_range = 15.157
+spot_angle = 17.57
+
+[node name="Lamp 6" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0.0503316, 0.998733, 0, -0.998733, 0.0503316, 4.84203, 3.81876, -8.84697)
+light_energy = 5.0
+light_indirect_energy = 4.0
+shadow_enabled = true
+spot_range = 15.157
+spot_angle = 17.57
+
+[node name="Lamp 7" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0.0503316, 0.998733, 0, -0.998733, 0.0503316, -0.000177145, 3.73029, -2.34389)
+light_energy = 5.0
+light_indirect_energy = 4.0
+shadow_enabled = true
+spot_range = 15.157
+spot_angle = 17.57
+
+[node name="Lamp 8" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0.0503316, 0.998733, 0, -0.998733, 0.0503316, 0.108762, 3.43503, -8.83474)
+light_energy = 5.0
+light_indirect_energy = 4.0
+shadow_enabled = true
+spot_range = 15.157
+spot_angle = 17.57
+
+[node name="Sun" type="DirectionalLight3D" parent="Lighting"]
+transform = Transform3D(0.439939, -0.24753, 0.86324, 0, 0.961262, 0.275637, -0.898028, -0.121264, 0.422896, 0, 0, 0)
+light_energy = 1.5
 shadow_enabled = true
 
 [node name="Scene" type="Node3D" parent="."]
 
 [node name="Warehouse" parent="Scene" instance=ExtResource("1_jepeo")]
-
-[node name="Player" type="Node3D" parent="Scene"]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 4.63379, 0.0335651, -3.37861)
 
 [node name="Colliders" type="Node3D" parent="Scene"]
 
@@ -145,68 +205,5 @@ transform = Transform3D(0.183505, 0.570493, -0.80054, -6.92058e-09, 0.814369, 0.
 [node name="Laure" parent="Scene" instance=ExtResource("2_4syor")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.02286, 0, -4.12745)
 
-[node name="Lighting" type="Node" parent="."]
-
-[node name="Lamp 1" type="SpotLight3D" parent="Lighting"]
-transform = Transform3D(1, 0, 0, 0, 0.0623726, 0.998053, 0, -0.998053, 0.0623726, 14.8644, 3.95915, -2.37221)
-light_energy = 5.0
-light_indirect_energy = 4.0
-shadow_enabled = true
-spot_range = 15.157
-spot_angle = 17.57
-
-[node name="Lamp 2" type="SpotLight3D" parent="Lighting"]
-transform = Transform3D(1, 0, 0, 0, -0.0470192, 0.998894, 0, -0.998894, -0.0470192, 14.6762, 4.33143, -8.78903)
-light_energy = 5.0
-light_indirect_energy = 4.0
-shadow_enabled = true
-spot_range = 15.157
-spot_angle = 17.57
-
-[node name="Lamp 3" type="SpotLight3D" parent="Lighting"]
-transform = Transform3D(1, 0, 0, 0, -0.0392248, 0.99923, 0, -0.99923, -0.0392248, 9.52388, 4.46317, -2.3583)
-light_energy = 5.0
-light_indirect_energy = 4.0
-shadow_enabled = true
-spot_range = 15.157
-spot_angle = 17.57
-
-[node name="Lamp 4" type="SpotLight3D" parent="Lighting"]
-transform = Transform3D(1, 0, 0, 0, 0.0193371, 0.999813, 0, -0.999813, 0.0193371, 9.51376, 4.07735, -8.80844)
-light_energy = 5.0
-light_indirect_energy = 4.0
-shadow_enabled = true
-spot_range = 15.157
-spot_angle = 17.57
-
-[node name="Lamp 5" type="SpotLight3D" parent="Lighting"]
-transform = Transform3D(1, 0, 0, 0, 0.102723, 0.99471, 0, -0.99471, 0.102723, 4.49876, 4.01871, -2.37314)
-light_energy = 5.0
-light_indirect_energy = 4.0
-shadow_enabled = true
-spot_range = 15.157
-spot_angle = 17.57
-
-[node name="Lamp 6" type="SpotLight3D" parent="Lighting"]
-transform = Transform3D(1, 0, 0, 0, 0.0503316, 0.998733, 0, -0.998733, 0.0503316, 4.84203, 3.81876, -8.84697)
-light_energy = 5.0
-light_indirect_energy = 4.0
-shadow_enabled = true
-spot_range = 15.157
-spot_angle = 17.57
-
-[node name="Lamp 7" type="SpotLight3D" parent="Lighting"]
-transform = Transform3D(1, 0, 0, 0, 0.0503316, 0.998733, 0, -0.998733, 0.0503316, -0.000177145, 3.73029, -2.34389)
-light_energy = 5.0
-light_indirect_energy = 4.0
-shadow_enabled = true
-spot_range = 15.157
-spot_angle = 17.57
-
-[node name="Lamp 8" type="SpotLight3D" parent="Lighting"]
-transform = Transform3D(1, 0, 0, 0, 0.0503316, 0.998733, 0, -0.998733, 0.0503316, 0.108762, 3.43503, -8.83474)
-light_energy = 5.0
-light_indirect_energy = 4.0
-shadow_enabled = true
-spot_range = 15.157
-spot_angle = 17.57
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_mhdq1")

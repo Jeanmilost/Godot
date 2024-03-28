@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://begm1hmhg6gbh"]
 
-[ext_resource type="PackedScene" uid="uid://dgw7gtb0fstom" path="res://assets/models/warehouse/abandoned_warehouse_-_interior_scene.glb" id="1_niqj0"]
+[ext_resource type="PackedScene" uid="uid://cur6itx7eaqia" path="res://assets/models/warehouse/abandoned_warehouse_-_interior_scene.glb" id="1_niqj0"]
 
 [node name="warehouse" instance=ExtResource("1_niqj0")]
 
