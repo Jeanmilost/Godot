@@ -3,7 +3,7 @@ This repository contains several demo projects created with the Godot Engine.
 
 **Survival demo**
 This is a small demo showing a survival game scene, where a character need to escape from a warehouse. **(Work in progress)**
-![Survival Demo Scene](Screenshots/SurvivalDEmo.png)
+![Survival Demo Scene](Screenshots/SurvivalDemo.png)
 
 ## Godot engine useful tips
 
