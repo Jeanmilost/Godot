@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bvp7ktqhfeper"]
+[gd_scene load_steps=33 format=3 uid="uid://bvp7ktqhfeper"]
 
 [ext_resource type="Texture2D" uid="uid://cfiumrmwjigy8" path="res://assets/textures/corridor/ground.tga" id="1_emgwm"]
 [ext_resource type="Texture2D" uid="uid://d4gk3uy3lgkvg" path="res://assets/textures/corridor/ground_metallic.tga" id="2_6lt16"]
@@ -56,6 +56,67 @@ material = SubResource("StandardMaterial3D_mrjec")
 [sub_resource type="BoxShape3D" id="BoxShape3D_twltb"]
 size = Vector3(0.1, 3, 3)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_goys1"]
+albedo_texture = ExtResource("1_emgwm")
+metallic = 1.0
+metallic_texture = ExtResource("2_6lt16")
+normal_enabled = true
+normal_texture = ExtResource("3_1ulva")
+uv1_scale = Vector3(16.72, 8, 1)
+uv1_offset = Vector3(0.325, 0, 0)
+uv1_triplanar_sharpness = 2.26391
+
+[sub_resource type="BoxMesh" id="BoxMesh_d484u"]
+material = SubResource("StandardMaterial3D_goys1")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ewx36"]
+size = Vector3(5, 0.1, 3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_whb5r"]
+albedo_texture = ExtResource("4_nw528")
+normal_enabled = true
+normal_texture = ExtResource("5_lrlsj")
+
+[sub_resource type="BoxMesh" id="BoxMesh_3gbrc"]
+material = SubResource("StandardMaterial3D_whb5r")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7fwjw"]
+size = Vector3(0.1, 3, 3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2on2j"]
+albedo_texture = ExtResource("4_nw528")
+normal_enabled = true
+normal_texture = ExtResource("5_lrlsj")
+uv1_scale = Vector3(2, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_p0dct"]
+material = SubResource("StandardMaterial3D_2on2j")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jii74"]
+size = Vector3(5, 3, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vu86e"]
+albedo_texture = ExtResource("4_nw528")
+normal_enabled = true
+normal_texture = ExtResource("5_lrlsj")
+
+[sub_resource type="BoxMesh" id="BoxMesh_mj0vb"]
+material = SubResource("StandardMaterial3D_vu86e")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8jgvi"]
+size = Vector3(0.1, 3, 3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mtvqb"]
+albedo_texture = ExtResource("4_nw528")
+normal_enabled = true
+normal_texture = ExtResource("5_lrlsj")
+
+[sub_resource type="BoxMesh" id="BoxMesh_xhk8d"]
+material = SubResource("StandardMaterial3D_mtvqb")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lbrif"]
+size = Vector3(2.09, 3, 0.1)
+
 [node name="Environment" type="Node3D"]
 
 [node name="Corridor" type="Node3D" parent="."]
@@ -103,6 +164,50 @@ skeleton = NodePath("../..")
 [node name="Wall_Bottom_Collider" type="CollisionShape3D" parent="Corridor/Wall_Bottom"]
 shape = SubResource("BoxShape3D_twltb")
 
+[node name="Ground_2" type="StaticBody3D" parent="Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -6.5)
+
+[node name="Ground_2_Mesh" type="MeshInstance3D" parent="Corridor/Ground_2"]
+transform = Transform3D(5, 0, 0, 0, 0.1, 0, 0, 0, 3, 0, 0, 0)
+mesh = SubResource("BoxMesh_d484u")
+skeleton = NodePath("../..")
+
+[node name="Ground_2_Collider" type="CollisionShape3D" parent="Corridor/Ground_2"]
+shape = SubResource("BoxShape3D_ewx36")
+
+[node name="Wall_2_Right" type="StaticBody3D" parent="Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1.5, -6.5)
+
+[node name="Wall_2_Right_Mesh" type="MeshInstance3D" parent="Corridor/Wall_2_Right"]
+transform = Transform3D(-0.1, 0, -2.62268e-07, 0, 3, 0, 8.74228e-09, 0, -3, 0, 0, 0)
+mesh = SubResource("BoxMesh_3gbrc")
+skeleton = NodePath("../..")
+
+[node name="Wall_2_Right_Collider" type="CollisionShape3D" parent="Corridor/Wall_2_Right"]
+shape = SubResource("BoxShape3D_7fwjw")
+
+[node name="Wall_2_Top" type="StaticBody3D" parent="Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.5, -8)
+
+[node name="Wall_2_Top_Mesh" type="MeshInstance3D" parent="Corridor/Wall_2_Top"]
+transform = Transform3D(5, 0, 0, 0, 3, 0, 0, 0, 0.1, 0, 0, 0)
+mesh = SubResource("BoxMesh_p0dct")
+skeleton = NodePath("../..")
+
+[node name="Wall_2_Top_Collider" type="CollisionShape3D" parent="Corridor/Wall_2_Top"]
+shape = SubResource("BoxShape3D_jii74")
+
+[node name="Wall_2_Left" type="StaticBody3D" parent="Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 1.5, -6.5)
+
+[node name="Wall_2_Left_Mesh" type="MeshInstance3D" parent="Corridor/Wall_2_Left"]
+transform = Transform3D(0.1, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+mesh = SubResource("BoxMesh_mj0vb")
+skeleton = NodePath("../..")
+
+[node name="Wall_2_Left_Collider" type="CollisionShape3D" parent="Corridor/Wall_2_Left"]
+shape = SubResource("BoxShape3D_8jgvi")
+
 [node name="Lighting" type="Node3D" parent="Corridor"]
 
 [node name="Light_Bottom" type="OmniLight3D" parent="Corridor/Lighting"]
@@ -111,8 +216,25 @@ light_color = Color(1, 0.978696, 0.854588, 1)
 light_energy = 3.5
 shadow_enabled = true
 
-[node name="Light_Top" type="OmniLight3D" parent="Corridor/Lighting"]
+[node name="Light_Middle" type="OmniLight3D" parent="Corridor/Lighting"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -2.5)
 light_color = Color(1, 0.978696, 0.854588, 1)
 light_energy = 3.5
 shadow_enabled = true
+
+[node name="Light_Top" type="OmniLight3D" parent="Corridor/Lighting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.25, 3, -6.35)
+light_color = Color(1, 0.978696, 0.854588, 1)
+light_energy = 3.5
+shadow_enabled = true
+
+[node name="Wall_2_Bottom" type="StaticBody3D" parent="Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.5, -4.951)
+
+[node name="Wall_2_Bottom_Mesh" type="MeshInstance3D" parent="Corridor/Wall_2_Bottom"]
+transform = Transform3D(2.09, 0, 0, 0, 3, 0, 0, 0, 0.1, 0, 0, 0)
+mesh = SubResource("BoxMesh_xhk8d")
+skeleton = NodePath("../..")
+
+[node name="Wall_2_Bottom_Collider" type="CollisionShape3D" parent="Corridor/Wall_2_Bottom"]
+shape = SubResource("BoxShape3D_lbrif")
