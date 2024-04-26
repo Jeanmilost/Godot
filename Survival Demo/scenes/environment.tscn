@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://bvp7ktqhfeper"]
+[gd_scene load_steps=49 format=3 uid="uid://bvp7ktqhfeper"]
 
 [ext_resource type="Texture2D" uid="uid://cfiumrmwjigy8" path="res://assets/textures/corridor/ground.tga" id="1_emgwm"]
 [ext_resource type="Texture2D" uid="uid://d4gk3uy3lgkvg" path="res://assets/textures/corridor/ground_metallic.tga" id="2_6lt16"]
@@ -6,6 +6,22 @@
 [ext_resource type="Texture2D" uid="uid://48s4p5oqdlih" path="res://assets/textures/corridor/wall.tga" id="4_nw528"]
 [ext_resource type="Texture2D" uid="uid://cfriw8qap51ow" path="res://assets/textures/corridor/wall_normals.tga" id="5_lrlsj"]
 [ext_resource type="PackedScene" uid="uid://cdpscvy1ahx5i" path="res://scenes/door.tscn" id="6_oycqh"]
+
+[sub_resource type="Animation" id="Animation_p7k74"]
+resource_name = "Door_Opening"
+length = 2.0
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, -0.707107, 0, 0.707107, 2, 1, 0, 0, 0, 1)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_snubt"]
+_data = {
+"Door_Opening": SubResource("Animation_p7k74")
+}
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pkhp3"]
 albedo_texture = ExtResource("1_emgwm")
@@ -175,13 +191,21 @@ size = Vector3(0.1, 3, 20)
 
 [node name="Door" type="Node3D" parent="."]
 
-[node name="door" parent="Door" instance=ExtResource("6_oycqh")]
-transform = Transform3D(1.78873e-10, 0, -0.015, 0, 0.015, 0, 0.015, 0, 1.78873e-10, 8.5, 0, -20)
-
 [node name="Lighting" type="Node3D" parent="Door"]
 
 [node name="Door_Light" type="SpotLight3D" parent="Door/Lighting"]
 transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 6.788, 0.884, -19.5)
+
+[node name="Door_Pivot" type="Node3D" parent="Door"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 8.5, 0, -20)
+
+[node name="door" parent="Door/Door_Pivot" instance=ExtResource("6_oycqh")]
+transform = Transform3D(0.015, 0, 0, 0, 0.015, 0, 0, 0, 0.015, 0, 0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Door/Door_Pivot"]
+libraries = {
+"": SubResource("AnimationLibrary_snubt")
+}
 
 [node name="Corridor" type="Node3D" parent="."]
 
