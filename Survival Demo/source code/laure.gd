@@ -50,8 +50,20 @@ func _physics_process(delta):
 	#	velocity.x = move_toward(velocity.x, 0, SPEED)
 	#	velocity.z = move_toward(velocity.z, 0, SPEED)
 
-	# change the animation state depending on the user action
-	$AnimationTree.set("parameters/conditions/isIdle",    velocity == Vector3.ZERO)
-	$AnimationTree.set("parameters/conditions/isWalking", velocity != Vector3.ZERO)
+	# get player state
+	var isIdle    = velocity == Vector3.ZERO
+	var isWalking = velocity != Vector3.ZERO
 	
+	# change the animation state depending on the user action
+	$AnimationTree.set("parameters/conditions/isIdle",    isIdle)
+	$AnimationTree.set("parameters/conditions/isWalking", isWalking)
+	
+	# play the walk sound if player is walking
+	if isWalking:
+		if !$Sounds/Walk.is_playing():
+			$Sounds/Walk.play();
+	else:
+		if $Sounds/Walk.is_playing():
+			$Sounds/Walk.stop();
+		
 	move_and_slide()
