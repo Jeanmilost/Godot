@@ -1,6 +1,7 @@
-[gd_scene load_steps=50 format=3 uid="uid://bvp7ktqhfeper"]
+[gd_scene load_steps=55 format=3 uid="uid://bvp7ktqhfeper"]
 
 [ext_resource type="Texture2D" uid="uid://cfiumrmwjigy8" path="res://assets/textures/corridor/ground.tga" id="1_emgwm"]
+[ext_resource type="AudioStream" uid="uid://byinp8jp2ier2" path="res://assets/Sounds/footsteps_concrete_corridor.mp3" id="1_kktod"]
 [ext_resource type="AudioStream" uid="uid://b2e5peayg2ruj" path="res://assets/Sounds/door_opening.mp3" id="2_4bfqs"]
 [ext_resource type="Texture2D" uid="uid://d4gk3uy3lgkvg" path="res://assets/textures/corridor/ground_metallic.tga" id="2_6lt16"]
 [ext_resource type="Texture2D" uid="uid://cbcnfb3of3y3l" path="res://assets/textures/corridor/ground_normals.tga" id="3_1ulva"]
@@ -8,8 +9,53 @@
 [ext_resource type="Texture2D" uid="uid://cfriw8qap51ow" path="res://assets/textures/corridor/wall_normals.tga" id="5_lrlsj"]
 [ext_resource type="PackedScene" uid="uid://cdpscvy1ahx5i" path="res://scenes/door.tscn" id="6_oycqh"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mdbb4"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_color = Color(0, 0, 0, 1)
+metallic_specular = 0.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_bdpv7"]
+material = SubResource("StandardMaterial3D_mdbb4")
+flip_faces = true
+
+[sub_resource type="Animation" id="Animation_lgsfs"]
+resource_name = "camera_walking"
+length = 6.0
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 4.5, 1.5, -19.5, 2, 1, 7.5, 1.5, -19.5, 4, 1, 7.5, 1.5, -19.5, 6, 1, 10.5, 1.5, -19.5)
+tracks/1/type = "audio"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../Sounds/Footsteps")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"clips": [{
+"end_offset": 9.34,
+"start_offset": 0.0,
+"stream": ExtResource("1_kktod")
+}, {
+"end_offset": 9.28854,
+"start_offset": 0.0,
+"stream": ExtResource("1_kktod")
+}],
+"times": PackedFloat32Array(0, 4)
+}
+tracks/1/use_blend = true
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_s22ts"]
+_data = {
+"camera_walking": SubResource("Animation_lgsfs")
+}
+
 [sub_resource type="Animation" id="Animation_p7k74"]
-resource_name = "Door_Opening"
+resource_name = "door_opening"
 length = 6.0
 tracks/0/type = "rotation_3d"
 tracks/0/imported = false
@@ -36,7 +82,7 @@ tracks/1/use_blend = true
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_snubt"]
 _data = {
-"Door_Opening": SubResource("Animation_p7k74")
+"door_opening": SubResource("Animation_p7k74")
 }
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pkhp3"]
@@ -207,13 +253,23 @@ size = Vector3(0.1, 3, 20)
 
 [node name="Door" type="Node3D" parent="."]
 
-[node name="Lighting" type="Node3D" parent="Door"]
+[node name="Background" type="MeshInstance3D" parent="Door"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 8.5, 0, -19.5)
+mesh = SubResource("BoxMesh_bdpv7")
 
-[node name="Door_Light" type="SpotLight3D" parent="Door/Lighting"]
-transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 6.788, 0.884, -19.5)
+[node name="Camera_Pivot" type="Node3D" parent="Door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 1.5, -19.5)
+
+[node name="Door_Camera" type="Camera3D" parent="Door/Camera_Pivot"]
+transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 0, 0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Door/Camera_Pivot"]
+libraries = {
+"": SubResource("AnimationLibrary_s22ts")
+}
 
 [node name="Door_Pivot" type="Node3D" parent="Door"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, -20)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 8.5, 0, -20)
 
 [node name="door" parent="Door/Door_Pivot" instance=ExtResource("6_oycqh")]
 transform = Transform3D(0.015, 0, 0, 0, 0.015, 0, 0, 0, 0.015, 0, 0, 0)
@@ -222,6 +278,11 @@ transform = Transform3D(0.015, 0, 0, 0, 0.015, 0, 0, 0, 0.015, 0, 0, 0)
 libraries = {
 "": SubResource("AnimationLibrary_snubt")
 }
+
+[node name="Lighting" type="Node3D" parent="Door"]
+
+[node name="Door_Light" type="SpotLight3D" parent="Door/Lighting"]
+transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 6.788, 0.884, -19.5)
 
 [node name="Corridor" type="Node3D" parent="."]
 
@@ -458,3 +519,5 @@ shape = SubResource("BoxShape3D_o01py")
 [node name="Sounds" type="Node" parent="."]
 
 [node name="Door_Opening" type="AudioStreamPlayer" parent="Sounds"]
+
+[node name="Footsteps" type="AudioStreamPlayer" parent="Sounds"]
