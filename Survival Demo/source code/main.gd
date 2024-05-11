@@ -18,7 +18,7 @@ func _process(delta):
 	if Input.is_action_pressed("player_action"):
 		RunDoorAnim()
 
-# Run the door animation, which links 
+# Switch to the door camera and run the door animation
 func RunDoorAnim():
 	# show the animation camera
 	$Scene/Environment/Door/Camera_Pivot/Door_Camera.current = true
