@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://c345ilxh3pu87"]
+
+[ext_resource type="PackedScene" uid="uid://cayjnxvk7k3p7" path="res://assets/models/tyrant/tyrant.glb" id="1_35uxh"]
+
+[node name="Tyrant" type="Node3D"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+
+[node name="Model" parent="." instance=ExtResource("1_35uxh")]

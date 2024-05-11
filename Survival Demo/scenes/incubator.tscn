@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3 uid="uid://daly4thcnd767"]
+
+[ext_resource type="PackedScene" uid="uid://c345ilxh3pu87" path="res://scenes/tyrant.tscn" id="1_3u0ti"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rqvrk"]
+transparency = 1
+albedo_color = Color(0.65098, 0.968627, 0.964706, 0.294118)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_3c7p3"]
+material = SubResource("StandardMaterial3D_rqvrk")
+height = 3.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_wweg5"]
+emission_shape_offset = Vector3(0, -1.2, 0)
+emission_shape_scale = Vector3(0.3, 0.3, 0.3)
+emission_shape = 1
+emission_sphere_radius = 1.0
+gravity = Vector3(0, 9.81, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cikmm"]
+transparency = 1
+albedo_color = Color(0.65098, 0.968627, 0.964706, 0.164706)
+
+[sub_resource type="SphereMesh" id="SphereMesh_g5chu"]
+material = SubResource("StandardMaterial3D_cikmm")
+radius = 0.05
+height = 0.1
+radial_segments = 10
+rings = 10
+
+[node name="Incubator" type="MeshInstance3D"]
+mesh = SubResource("CapsuleMesh_3c7p3")
+
+[node name="Tyrant" parent="." instance=ExtResource("1_3u0ti")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, -0.8, 0)
+
+[node name="Bubbles" type="GPUParticles3D" parent="."]
+cast_shadow = 0
+amount = 50
+amount_ratio = 0.2
+lifetime = 2.2
+interp_to_end = 0.1
+randomness = 1.0
+collision_base_size = 0.0
+visibility_aabb = AABB(-0.5, -1.5, -0.5, 1, 3, 1)
+trail_lifetime = 1.96
+process_material = SubResource("ParticleProcessMaterial_wweg5")
+draw_pass_1 = SubResource("SphereMesh_g5chu")

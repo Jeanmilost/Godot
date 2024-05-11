@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://bvp7ktqhfeper"]
+[gd_scene load_steps=59 format=3 uid="uid://bvp7ktqhfeper"]
 
 [ext_resource type="Texture2D" uid="uid://cfiumrmwjigy8" path="res://assets/textures/corridor/ground.tga" id="1_emgwm"]
 [ext_resource type="AudioStream" uid="uid://byinp8jp2ier2" path="res://assets/Sounds/footsteps_concrete_corridor.mp3" id="1_kktod"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://48s4p5oqdlih" path="res://assets/textures/corridor/wall.tga" id="4_nw528"]
 [ext_resource type="Texture2D" uid="uid://cfriw8qap51ow" path="res://assets/textures/corridor/wall_normals.tga" id="5_lrlsj"]
 [ext_resource type="PackedScene" uid="uid://cdpscvy1ahx5i" path="res://scenes/door.tscn" id="6_oycqh"]
+[ext_resource type="PackedScene" uid="uid://daly4thcnd767" path="res://scenes/incubator.tscn" id="9_bj16o"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mdbb4"]
 vertex_color_use_as_albedo = true
@@ -248,6 +249,18 @@ material = SubResource("StandardMaterial3D_pncge")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_o01py"]
 size = Vector3(0.1, 3, 20)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qjx6j"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_color = Color(0.713726, 0.666667, 0.615686, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_oebed"]
+material = SubResource("StandardMaterial3D_qjx6j")
+size = Vector3(20, 0.5, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gjgrr"]
+size = Vector3(20, 0.5, 3)
 
 [node name="Environment" type="Node3D"]
 
@@ -515,6 +528,26 @@ skeleton = NodePath("../../../Corridor")
 
 [node name="Wall_3_Top_Collider" type="CollisionShape3D" parent="Room/Wall_Top"]
 shape = SubResource("BoxShape3D_o01py")
+
+[node name="Incubators" type="Node3D" parent="Room"]
+
+[node name="Base" type="StaticBody3D" parent="Room/Incubators"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0.25, -28.5)
+
+[node name="Base_Mesh" type="MeshInstance3D" parent="Room/Incubators/Base"]
+mesh = SubResource("BoxMesh_oebed")
+
+[node name="Base_Collider" type="CollisionShape3D" parent="Room/Incubators/Base"]
+shape = SubResource("BoxShape3D_gjgrr")
+
+[node name="Incubator_1" parent="Room/Incubators" instance=ExtResource("9_bj16o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 2, -28.25)
+
+[node name="Incubator_2" parent="Room/Incubators" instance=ExtResource("9_bj16o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 2, -28.25)
+
+[node name="Incubator_3" parent="Room/Incubators" instance=ExtResource("9_bj16o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 2, -28.25)
 
 [node name="Sounds" type="Node" parent="."]
 
