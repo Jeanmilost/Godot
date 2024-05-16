@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://i134isrh8srx"]
+[gd_scene load_steps=14 format=3 uid="uid://i134isrh8srx"]
 
 [ext_resource type="Script" path="res://source code/main.gd" id="1_aodvc"]
 [ext_resource type="PackedScene" uid="uid://bjhebkbi2sx70" path="res://scenes/laure.tscn" id="2_4syor"]
 [ext_resource type="PackedScene" uid="uid://bvp7ktqhfeper" path="res://scenes/environment.tscn" id="3_a4lbk"]
+[ext_resource type="AudioStream" uid="uid://dqufgpkkxb0qp" path="res://assets/Sounds/door_handle_turns.mp3" id="4_eavtj"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_k065u"]
 sky_horizon_color = Color(0.79625, 0.808598, 0.808088, 1)
@@ -28,10 +29,22 @@ volumetric_fog_anisotropy = 0.4
 volumetric_fog_ambient_inject = 0.2
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_71l8q"]
-size = Vector3(3, 3, 4)
+size = Vector3(3, 3, 5)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_58p6p"]
-size = Vector3(3, 3, 4)
+size = Vector3(3, 3, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uxyol"]
+size = Vector3(5, 3, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uw6ya"]
+size = Vector3(1.075, 1.925, 0.1)
+
+[sub_resource type="SystemFont" id="SystemFont_dvs3g"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_darcx"]
+font = SubResource("SystemFont_dvs3g")
+font_size = 25
 
 [node name="Main" type="Node"]
 script = ExtResource("1_aodvc")
@@ -44,27 +57,64 @@ environment = SubResource("Environment_02ojy")
 [node name="Cameras" type="Node3D" parent="Scene"]
 
 [node name="Camera_1" type="Camera3D" parent="Scene/Cameras"]
-transform = Transform3D(-1, 5.07667e-08, -7.11723e-08, 0, 0.814116, 0.580703, 8.74228e-08, 0.580703, -0.814116, 0, 2.5, 0)
+transform = Transform3D(-1, 5.07667e-08, -7.11723e-08, 0, 0.814116, 0.580703, 8.74228e-08, 0.580703, -0.814116, 0, 2.5, -0.510787)
 
 [node name="Camera_2" type="Camera3D" parent="Scene/Cameras"]
-transform = Transform3D(-4.37114e-08, -0.707107, 0.707107, 0, 0.707107, 0.707107, -1, 3.09086e-08, -3.09086e-08, 1.55, 2.8, -1.5)
+transform = Transform3D(1, 0, 0, 0, 0.814116, 0.580703, 0, -0.580703, 0.814116, 0, 2.5, 1.16424)
+
+[node name="Camera_3" type="Camera3D" parent="Scene/Cameras"]
+transform = Transform3D(-4.37114e-08, -0.580703, 0.814116, 0, 0.814116, 0.580703, -1, 2.53833e-08, -3.55861e-08, 1.5, 2.5, -6.5)
 
 [node name="Laure" parent="Scene" instance=ExtResource("2_4syor")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 3.5)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.1, 3.5)
 
 [node name="Environment" parent="Scene" instance=ExtResource("3_a4lbk")]
 
 [node name="Trigger_1" type="Area3D" parent="Scene/Environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 2.5)
 
 [node name="Trigger_Box" type="CollisionShape3D" parent="Scene/Environment/Trigger_1"]
 shape = SubResource("BoxShape3D_71l8q")
 
 [node name="Trigger_2" type="Area3D" parent="Scene/Environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -2.5)
 
 [node name="Trigger_Box" type="CollisionShape3D" parent="Scene/Environment/Trigger_2"]
 shape = SubResource("BoxShape3D_58p6p")
+
+[node name="Trigger_3" type="Area3D" parent="Scene/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.5, -6.5)
+
+[node name="Trigger_Box" type="CollisionShape3D" parent="Scene/Environment/Trigger_3"]
+shape = SubResource("BoxShape3D_uxyol")
+
+[node name="Trigger_4" type="Area3D" parent="Scene/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06, 1.013, 4.868)
+
+[node name="Trigger_Box" type="CollisionShape3D" parent="Scene/Environment/Trigger_4"]
+shape = SubResource("BoxShape3D_uw6ya")
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="Door_Handle_Turns" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("4_eavtj")
+
+[node name="User_Interface" type="Node3D" parent="."]
+
+[node name="Label" type="Label" parent="User_Interface"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -576.0
+offset_top = -50.0
+offset_right = 576.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "This is a demo text"
+label_settings = SubResource("LabelSettings_darcx")
+horizontal_alignment = 1
 
 [connection signal="area_entered" from="Scene/Environment/Trigger_1" to="." method="_on_trigger_1_area_entered"]
 [connection signal="body_entered" from="Scene/Environment/Trigger_1" to="." method="_on_trigger_1_body_entered"]
@@ -72,3 +122,6 @@ shape = SubResource("BoxShape3D_58p6p")
 [connection signal="area_entered" from="Scene/Environment/Trigger_2" to="." method="_on_trigger_2_area_entered"]
 [connection signal="body_entered" from="Scene/Environment/Trigger_2" to="." method="_on_trigger_2_body_entered"]
 [connection signal="body_exited" from="Scene/Environment/Trigger_2" to="." method="_on_trigger_2_body_exited"]
+[connection signal="body_entered" from="Scene/Environment/Trigger_3" to="." method="_on_trigger_3_body_entered"]
+[connection signal="body_exited" from="Scene/Environment/Trigger_3" to="." method="_on_trigger_3_body_exited"]
+[connection signal="body_entered" from="Scene/Environment/Trigger_4" to="." method="_on_trigger_4_body_entered"]
