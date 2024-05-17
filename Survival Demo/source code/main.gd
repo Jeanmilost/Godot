@@ -21,13 +21,15 @@ var g_InArea3        = false
 var g_MsgShowTime   = 2000
 var g_MsgTrialStamp = 0
 
+###
 # Called when the node enters the scene tree for the first time
+##
 func _ready():
 	g_Camera1.current = true
 	g_Label.visible   = false
 
 ###
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+# Called every frame
 #@param delta - elapsed time in seconds since the previous call
 ##
 func _process(delta):
@@ -38,11 +40,11 @@ func _process(delta):
 	if (Time.get_ticks_msec() >= g_MsgTrialStamp + g_MsgShowTime):
 		g_Label.visible = false
 	
-	if Input.is_action_pressed("player_action"):
-		RunDoorAnim()
+	#if Input.is_action_pressed("player_action"):
+	#	RunDoorAnim()
 
 ###
-# Switch to the door camera and run the door animation
+# Switches to the door camera and run the door animation
 ##
 func RunDoorAnim():
 	# show the animation camera
@@ -149,3 +151,13 @@ func _on_trigger_4_body_entered(body):
 	g_Label.text     = "The door is closed and won't open."
 	g_Label.visible  = true
 	g_PlayerHitDoor1 = true
+
+###
+# Called when a body entered on the fifth trigger area
+#@param body - body which entered in the area
+##
+func _on_trigger_5_body_entered(body):
+	if body != g_Player:
+		return
+
+	RunDoorAnim()

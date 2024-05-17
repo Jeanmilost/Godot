@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://ch8b3vstt3jja"]
+
+[ext_resource type="PackedScene" uid="uid://ccapkitdfhk7n" path="res://assets/models/key/key.glb" id="1_dh4eb"]
+[ext_resource type="Script" path="res://source code/key.gd" id="1_sisau"]
+[ext_resource type="Texture2D" uid="uid://cf77v1maiu40u" path="res://assets/textures/key/highlight.png" id="2_5ucif"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sxmf2"]
+transparency = 1
+cull_mode = 1
+depth_draw_mode = 1
+albedo_texture = ExtResource("2_5ucif")
+albedo_texture_force_srgb = true
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pn7xo"]
+lightmap_size_hint = Vector2i(3, 3)
+material = SubResource("StandardMaterial3D_sxmf2")
+size = Vector2(0.25, 0.25)
+
+[node name="Key" type="Node3D"]
+script = ExtResource("1_sisau")
+
+[node name="Model" parent="." instance=ExtResource("1_dh4eb")]
+
+[node name="Highlight" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.415735, 0.720074, 0.55557, 0.866025, 0.5, -4.37114e-08, -0.277785, 0.481138, -0.83147, -0.066, 0, -0.14)
+mesh = SubResource("PlaneMesh_pn7xo")
+
+[editable path="Model"]

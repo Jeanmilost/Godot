@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://i134isrh8srx"]
+[gd_scene load_steps=16 format=3 uid="uid://i134isrh8srx"]
 
 [ext_resource type="Script" path="res://source code/main.gd" id="1_aodvc"]
 [ext_resource type="PackedScene" uid="uid://bjhebkbi2sx70" path="res://scenes/laure.tscn" id="2_4syor"]
 [ext_resource type="PackedScene" uid="uid://bvp7ktqhfeper" path="res://scenes/environment.tscn" id="3_a4lbk"]
 [ext_resource type="AudioStream" uid="uid://dqufgpkkxb0qp" path="res://assets/Sounds/door_handle_turns.mp3" id="4_eavtj"]
+[ext_resource type="PackedScene" uid="uid://ch8b3vstt3jja" path="res://scenes/key.tscn" id="4_q772o"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_k065u"]
 sky_horizon_color = Color(0.79625, 0.808598, 0.808088, 1)
@@ -39,6 +40,9 @@ size = Vector3(5, 3, 3)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_uw6ya"]
 size = Vector3(1.075, 1.925, 0.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tactw"]
+size = Vector3(0.1, 1.925, 1.075)
 
 [sub_resource type="SystemFont" id="SystemFont_dvs3g"]
 
@@ -94,6 +98,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06, 1.013, 4.868)
 [node name="Trigger_Box" type="CollisionShape3D" parent="Scene/Environment/Trigger_4"]
 shape = SubResource("BoxShape3D_uw6ya")
 
+[node name="Trigger_5" type="Area3D" parent="Scene/Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.625, 1.013, -6.25)
+
+[node name="Trigger_Box" type="CollisionShape3D" parent="Scene/Environment/Trigger_5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.759997, 0, -0.281687)
+shape = SubResource("BoxShape3D_tactw")
+
+[node name="Key" parent="Scene" instance=ExtResource("4_q772o")]
+transform = Transform3D(-0.53033, 0.53033, -2.31815e-08, 0, -3.27835e-08, -0.75, -0.53033, -0.53033, 2.31815e-08, -1.02885, 0.0532857, -0.868205)
+
 [node name="Sounds" type="Node" parent="."]
 
 [node name="Door_Handle_Turns" type="AudioStreamPlayer" parent="Sounds"]
@@ -125,3 +139,4 @@ horizontal_alignment = 1
 [connection signal="body_entered" from="Scene/Environment/Trigger_3" to="." method="_on_trigger_3_body_entered"]
 [connection signal="body_exited" from="Scene/Environment/Trigger_3" to="." method="_on_trigger_3_body_exited"]
 [connection signal="body_entered" from="Scene/Environment/Trigger_4" to="." method="_on_trigger_4_body_entered"]
+[connection signal="body_entered" from="Scene/Environment/Trigger_5" to="." method="_on_trigger_5_body_entered"]
