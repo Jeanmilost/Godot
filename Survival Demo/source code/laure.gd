@@ -9,11 +9,22 @@ extends CharacterBody3D
 const g_WalkingSpeed  = 1.5
 const g_RotationSpeed = 4
 
+# flags
+var g_DoorOpening = false
+
 ###
 # Called every frame at a fixed rate, which allows any processing that requires the physics values
 #@param delta - elapsed time in seconds since the previous call
 ##
 func _physics_process(delta):
+	# is door opening?
+	if g_DoorOpening:
+		# stop the walking sound
+		if g_WalkSound.is_playing():
+			g_WalkSound.stop();
+
+		return
+
 	# rotate the player
 	if Input.is_action_pressed("turn_right"):
 		rotation.y -= delta * g_RotationSpeed 
@@ -47,3 +58,9 @@ func _physics_process(delta):
 			g_WalkSound.stop();
 
 	move_and_slide()
+
+###
+# Called when laboratory door is opening
+##
+func _on_main_on_door_opening():
+	g_DoorOpening = true
