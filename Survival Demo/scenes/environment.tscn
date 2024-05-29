@@ -1,6 +1,7 @@
-[gd_scene load_steps=59 format=3 uid="uid://bvp7ktqhfeper"]
+[gd_scene load_steps=60 format=3 uid="uid://bvp7ktqhfeper"]
 
 [ext_resource type="Texture2D" uid="uid://cfiumrmwjigy8" path="res://assets/textures/corridor/ground.tga" id="1_emgwm"]
+[ext_resource type="Script" path="res://scenes/environment.gd" id="1_hf86y"]
 [ext_resource type="AudioStream" uid="uid://byinp8jp2ier2" path="res://assets/Sounds/footsteps_concrete_corridor.mp3" id="1_kktod"]
 [ext_resource type="AudioStream" uid="uid://b2e5peayg2ruj" path="res://assets/Sounds/door_opening.mp3" id="2_4bfqs"]
 [ext_resource type="Texture2D" uid="uid://d4gk3uy3lgkvg" path="res://assets/textures/corridor/ground_metallic.tga" id="2_6lt16"]
@@ -92,6 +93,8 @@ metallic = 1.0
 metallic_texture = ExtResource("2_6lt16")
 normal_enabled = true
 normal_texture = ExtResource("3_1ulva")
+clearcoat = 0.15
+clearcoat_roughness = 0.55
 uv1_scale = Vector3(10, 25, 25)
 
 [sub_resource type="BoxMesh" id="BoxMesh_jib1r"]
@@ -107,6 +110,8 @@ metallic = 1.0
 metallic_texture = ExtResource("2_6lt16")
 normal_enabled = true
 normal_texture = ExtResource("3_1ulva")
+clearcoat = 0.15
+clearcoat_roughness = 0.55
 uv1_scale = Vector3(16.72, 8, 1)
 uv1_offset = Vector3(0.325, 0, 0)
 uv1_triplanar_sharpness = 2.26391
@@ -203,13 +208,16 @@ metallic = 1.0
 metallic_texture = ExtResource("2_6lt16")
 normal_enabled = true
 normal_texture = ExtResource("3_1ulva")
-uv1_scale = Vector3(40, 40, 1)
+clearcoat_enabled = true
+clearcoat = 0.15
+clearcoat_roughness = 0.55
+uv1_scale = Vector3(10, 7, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_65rij"]
 material = SubResource("StandardMaterial3D_245cj")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_myjr6"]
-size = Vector3(20, 0.1, 20)
+size = Vector3(10, 0.1, 10)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5vmgv"]
 albedo_texture = ExtResource("4_nw528")
@@ -221,7 +229,7 @@ uv1_scale = Vector3(10, 1, 1)
 material = SubResource("StandardMaterial3D_5vmgv")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hpmiu"]
-size = Vector3(0.1, 3, 20)
+size = Vector3(0.1, 3, 10)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_814k2"]
 albedo_texture = ExtResource("4_nw528")
@@ -233,10 +241,10 @@ uv1_scale = Vector3(10, 1, 1)
 material = SubResource("StandardMaterial3D_814k2")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_n2agq"]
-size = Vector3(20, 3, 0.1)
+size = Vector3(10, 3, 0.1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hcisn"]
-size = Vector3(20, 3, 0.1)
+size = Vector3(10, 3, 0.1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pncge"]
 albedo_texture = ExtResource("4_nw528")
@@ -248,7 +256,7 @@ uv1_scale = Vector3(10, 1, 1)
 material = SubResource("StandardMaterial3D_pncge")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_o01py"]
-size = Vector3(0.1, 3, 20)
+size = Vector3(0.1, 3, 10)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qjx6j"]
 vertex_color_use_as_albedo = true
@@ -263,6 +271,7 @@ size = Vector3(20, 0.5, 3)
 size = Vector3(20, 0.5, 3)
 
 [node name="Environment" type="Node3D"]
+script = ExtResource("1_hf86y")
 
 [node name="Door" type="Node3D" parent="."]
 
@@ -271,7 +280,7 @@ transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 8.5, 0, -19.5)
 mesh = SubResource("BoxMesh_bdpv7")
 
 [node name="Camera_Pivot" type="Node3D" parent="Door"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 1.5, -19.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 1.5, -19.5)
 
 [node name="Door_Camera" type="Camera3D" parent="Door/Camera_Pivot"]
 transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 0, 0, 0)
@@ -282,7 +291,7 @@ libraries = {
 }
 
 [node name="Door_Pivot" type="Node3D" parent="Door"]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 8.5, 0, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, -20)
 
 [node name="door" parent="Door/Door_Pivot" instance=ExtResource("6_oycqh")]
 transform = Transform3D(0.015, 0, 0, 0, 0.015, 0, 0, 0, 0.015, 0, 0, 0)
@@ -426,13 +435,13 @@ shape = SubResource("BoxShape3D_jii74")
 [node name="Room" type="Node3D" parent="."]
 
 [node name="Door" parent="Room" instance=ExtResource("6_oycqh")]
-transform = Transform3D(1.78873e-10, 0, -0.015, 0, 0.015, 0, 0.015, 0, 1.78873e-10, -10.01, 0, -21)
+transform = Transform3D(1.78873e-10, 0, -0.015, 0, 0.015, 0, 0.015, 0, 1.78873e-10, -10.01, 0, -20.5)
 
 [node name="Ground" type="StaticBody3D" parent="Room"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, -20)
 
 [node name="Ground_Mesh" type="MeshInstance3D" parent="Room/Ground"]
-transform = Transform3D(20, 0, 0, 0, 0.1, 0, 0, 0, 20, 0, 0, 0)
+transform = Transform3D(10, 0, 0, 0, 0.1, 0, 0, 0, 10, 0, 0, 0)
 mesh = SubResource("BoxMesh_65rij")
 skeleton = NodePath("../../../Corridor")
 
@@ -442,54 +451,46 @@ shape = SubResource("BoxShape3D_myjr6")
 [node name="Lighting" type="Node3D" parent="Room"]
 
 [node name="Light_Top_Left" type="OmniLight3D" parent="Room/Lighting"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 3, -15)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 3, -16)
 light_color = Color(1, 0.978696, 0.854588, 1)
-light_energy = 2.0
-light_size = 5.0
-light_specular = 1.0
+light_energy = 3.5
 shadow_enabled = true
-omni_range = 9.0
-omni_attenuation = 0.466518
+omni_range = 7.0
+omni_attenuation = 2.25313
 omni_shadow_mode = 0
 
 [node name="Light_Top_Right" type="OmniLight3D" parent="Room/Lighting"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 3, -25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 3, -21)
 light_color = Color(1, 0.978696, 0.854588, 1)
-light_energy = 2.0
-light_size = 5.0
-light_specular = 1.0
+light_energy = 3.5
 shadow_enabled = true
-omni_range = 9.0
-omni_attenuation = 0.466518
+omni_range = 7.0
+omni_attenuation = 2.25313
 omni_shadow_mode = 0
 
 [node name="Light_Bottom_Left" type="OmniLight3D" parent="Room/Lighting"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 3, -15)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 3, -16)
 light_color = Color(1, 0.978696, 0.854588, 1)
-light_energy = 2.0
-light_size = 5.0
-light_specular = 1.0
+light_energy = 3.5
 shadow_enabled = true
-omni_range = 9.0
-omni_attenuation = 0.466518
+omni_range = 7.0
+omni_attenuation = 2.25313
 omni_shadow_mode = 0
 
 [node name="Light_Bottom_Right" type="OmniLight3D" parent="Room/Lighting"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 3, -25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 3, -21)
 light_color = Color(1, 0.978696, 0.854588, 1)
-light_energy = 2.0
-light_size = 5.0
-light_specular = 1.0
+light_energy = 3.5
 shadow_enabled = true
-omni_range = 9.0
-omni_attenuation = 0.466518
+omni_range = 7.0
+omni_attenuation = 2.25313
 omni_shadow_mode = 0
 
 [node name="Wall_Bottom" type="StaticBody3D" parent="Room"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 1.5, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 1.5, -20)
 
 [node name="Wall_3_Bottom_Mesh" type="MeshInstance3D" parent="Room/Wall_Bottom"]
-transform = Transform3D(0.1, 0, 0, 0, 3, 0, 0, 0, 20, 0, 0, 0)
+transform = Transform3D(0.1, 0, 0, 0, 3, 0, 0, 0, 10, 0, 0, 0)
 mesh = SubResource("BoxMesh_oq07l")
 skeleton = NodePath("../../../Corridor")
 
@@ -497,10 +498,10 @@ skeleton = NodePath("../../../Corridor")
 shape = SubResource("BoxShape3D_hpmiu")
 
 [node name="Wall_Left" type="StaticBody3D" parent="Room"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 1.5, -30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 1.5, -25)
 
 [node name="Wall_3_Left_Mesh" type="MeshInstance3D" parent="Room/Wall_Left"]
-transform = Transform3D(-4.37114e-09, -2.62268e-07, -20, 0, -3, 1.74846e-06, -0.1, 1.14641e-14, 8.74228e-07, 0, 0, 0)
+transform = Transform3D(-7.54979e-09, -2.62268e-07, -10, -8.74228e-09, -3, 8.74227e-07, -0.1, 2.62268e-07, 7.54979e-07, 0, 0, 0)
 mesh = SubResource("BoxMesh_qjk3j")
 skeleton = NodePath("../../../Corridor")
 
@@ -508,10 +509,10 @@ skeleton = NodePath("../../../Corridor")
 shape = SubResource("BoxShape3D_n2agq")
 
 [node name="Wall_Right" type="StaticBody3D" parent="Room"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 1.5, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 1.5, -15)
 
 [node name="Wall_3_Right_Mesh" type="MeshInstance3D" parent="Room/Wall_Right"]
-transform = Transform3D(-4.37114e-09, 0, 20, 0, 3, 0, -0.1, 0, -8.74228e-07, 0, 0, 0)
+transform = Transform3D(-4.37114e-09, 0, 10, 0, 3, 0, -0.1, 0, -4.37114e-07, 0, 0, 0)
 mesh = SubResource("BoxMesh_qjk3j")
 skeleton = NodePath("../../../Corridor")
 
@@ -522,7 +523,7 @@ shape = SubResource("BoxShape3D_hcisn")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1.5, -20)
 
 [node name="Wall_3_Top_Mesh" type="MeshInstance3D" parent="Room/Wall_Top"]
-transform = Transform3D(0.1, 0, 0, 0, -3, 1.74846e-06, 0, -2.62268e-07, -20, 0, 0, 0)
+transform = Transform3D(0.1, 0, 0, 0, -3, 1.50996e-06, 0, -4.52987e-07, -10, 0, 0, 0)
 mesh = SubResource("BoxMesh_06bii")
 skeleton = NodePath("../../../Corridor")
 
@@ -532,7 +533,7 @@ shape = SubResource("BoxShape3D_o01py")
 [node name="Incubators" type="Node3D" parent="Room"]
 
 [node name="Base" type="StaticBody3D" parent="Room/Incubators"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0.25, -28.5)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -15, 0.2, -24.25)
 
 [node name="Base_Mesh" type="MeshInstance3D" parent="Room/Incubators/Base"]
 mesh = SubResource("BoxMesh_oebed")
@@ -541,16 +542,18 @@ mesh = SubResource("BoxMesh_oebed")
 shape = SubResource("BoxShape3D_gjgrr")
 
 [node name="Incubator_1" parent="Room/Incubators" instance=ExtResource("9_bj16o")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 2, -28.25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 1.8, -24.25)
 
 [node name="Incubator_2" parent="Room/Incubators" instance=ExtResource("9_bj16o")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 2, -28.25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 1.8, -24.25)
 
 [node name="Incubator_3" parent="Room/Incubators" instance=ExtResource("9_bj16o")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 2, -28.25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1.8, -24.25)
 
 [node name="Sounds" type="Node" parent="."]
 
 [node name="Door_Opening" type="AudioStreamPlayer" parent="Sounds"]
 
 [node name="Footsteps" type="AudioStreamPlayer" parent="Sounds"]
+
+[connection signal="animation_finished" from="Door/Door_Pivot/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

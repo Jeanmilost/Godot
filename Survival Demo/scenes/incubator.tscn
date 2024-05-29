@@ -29,6 +29,7 @@ radial_segments = 10
 rings = 10
 
 [node name="Incubator" type="MeshInstance3D"]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
 mesh = SubResource("CapsuleMesh_3c7p3")
 
 [node name="Tyrant" parent="." instance=ExtResource("1_3u0ti")]
@@ -38,7 +39,7 @@ transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, -0.8, 0)
 cast_shadow = 0
 amount = 50
 amount_ratio = 0.2
-lifetime = 2.2
+lifetime = 1.7
 interp_to_end = 0.1
 randomness = 1.0
 collision_base_size = 0.0

@@ -5,6 +5,7 @@ extends Node
 @onready var g_Camera1          = $Scene/Cameras/Camera_1
 @onready var g_Camera2          = $Scene/Cameras/Camera_2
 @onready var g_Camera3          = $Scene/Cameras/Camera_3
+@onready var g_Camera4          = $Scene/Cameras/Camera_4
 @onready var g_Key              = $Scene/Key
 @onready var g_DoorCamera       = $Scene/Environment/Door/Camera_Pivot/Door_Camera
 @onready var g_DoorPlayer       = $Scene/Environment/Door/Door_Pivot/AnimationPlayer
@@ -255,3 +256,16 @@ func _on_trigger_6_body_exited(body):
 		return
 
 	g_CanTakeKey = false
+
+###
+# Called when th door animation finished
+##
+func _on_environment_on_door_anim_finished():
+	#place the player on the next room
+	g_Player.position.x = -10.5
+	g_Player.position.z = -20.5
+	g_Player.rotation.y = -deg_to_rad(90)
+
+	# enable the room first camera
+	g_DoorCamera.current = false
+	g_Camera4.current    = true

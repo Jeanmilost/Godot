@@ -64,3 +64,6 @@ func _physics_process(delta):
 ##
 func _on_main_on_door_opening():
 	g_DoorOpening = true
+
+func _on_environment_on_door_anim_finished():
+	g_DoorOpening = false
