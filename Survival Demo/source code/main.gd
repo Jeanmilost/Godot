@@ -19,6 +19,7 @@ extends Node
 # flags
 var g_PlayerHitDoor1   = false
 var g_PlayerHitDoor2   = false
+var g_PlayerHitDoor3   = false
 var g_InArea1          = true
 var g_InArea2          = false
 var g_InArea3          = false
@@ -26,6 +27,7 @@ var g_CanTakeKey       = false
 var g_KeyFound         = false
 var g_LabDoorUnlocking = false
 var g_LabDoorUnlocked  = false
+var g_ExitingRoom 	   = false
 
 # times
 var g_MsgShowTime   = 2000
@@ -73,7 +75,7 @@ func _process(delta):
 				if g_LabDoorUnlocked:
 					# run door animation
 					RunDoorAnim()
-				else:
+				elif !g_LabDoorUnlocking:
 					# play the turning door handle sound
 					if !g_DoorUnlockSound.is_playing():
 						g_DoorUnlockSound.play();
@@ -95,6 +97,13 @@ func _process(delta):
 				g_Label.text     = "You need the Laboratory key to open this door."
 				g_Label.visible  = true
 				g_MsgTrialStamp  = Time.get_ticks_msec()
+
+		# player hits the room door?
+		if g_PlayerHitDoor3:
+			# run door animation
+			RunDoorAnim()
+			
+			g_ExitingRoom = true
 
 		if g_CanTakeKey && !g_KeyFound:
 			# play the pick up sound
@@ -258,14 +267,46 @@ func _on_trigger_6_body_exited(body):
 	g_CanTakeKey = false
 
 ###
+# Called when a body entered on the seventh trigger area
+#@param body - body which entered in the area
+##
+func _on_trigger_7_body_entered(body):
+	if body != g_Player:
+		return
+
+	g_PlayerHitDoor3 = true
+
+###
+# Called when a body exited the seventh trigger area
+#@param body - body which exited the area
+##
+func _on_trigger_7_body_exited(body):
+	if body != g_Player:
+		return
+
+	g_PlayerHitDoor3 = false
+
+###
 # Called when th door animation finished
 ##
 func _on_environment_on_door_anim_finished():
-	#place the player on the next room
-	g_Player.position.x = -10.5
-	g_Player.position.z = -20.5
-	g_Player.rotation.y = -deg_to_rad(90)
+	if g_ExitingRoom:
+		#place the player on the next room
+		g_Player.position.x = -2.5
+		g_Player.position.z = -6.6
+		g_Player.rotation.y = -deg_to_rad(270)
 
-	# enable the room first camera
-	g_DoorCamera.current = false
-	g_Camera4.current    = true
+		# enable the room first camera
+		g_DoorCamera.current = false
+		g_Camera3.current    = true
+
+		g_ExitingRoom = false
+	else:
+		#place the player on the next room
+		g_Player.position.x = -10.5
+		g_Player.position.z = -20
+		g_Player.rotation.y = -deg_to_rad(90)
+
+		# enable the room first camera
+		g_DoorCamera.current = false
+		g_Camera4.current    = true
