@@ -303,7 +303,7 @@ func _on_environment_on_door_anim_finished():
 		g_ExitingRoom = false
 	else:
 		#place the player on the next room
-		g_Player.position.x = -10.5
+		g_Player.position.x = -11
 		g_Player.position.z = -20
 		g_Player.rotation.y = -deg_to_rad(90)
 
