@@ -1,4 +1,4 @@
-[gd_scene load_steps=86 format=3 uid="uid://bvp7ktqhfeper"]
+[gd_scene load_steps=89 format=3 uid="uid://bvp7ktqhfeper"]
 
 [ext_resource type="Texture2D" uid="uid://cfiumrmwjigy8" path="res://assets/textures/corridor/ground.tga" id="1_emgwm"]
 [ext_resource type="Script" path="res://scenes/environment.gd" id="1_hf86y"]
@@ -11,7 +11,6 @@
 [ext_resource type="PackedScene" uid="uid://cdpscvy1ahx5i" path="res://scenes/door.tscn" id="6_oycqh"]
 [ext_resource type="PackedScene" uid="uid://daly4thcnd767" path="res://scenes/incubator.tscn" id="9_bj16o"]
 [ext_resource type="Texture2D" uid="uid://cw7fl83o5ve2g" path="res://assets/textures/control panel/ammeter.png" id="10_qg0oi"]
-[ext_resource type="Texture2D" uid="uid://d3vnu006s78ld" path="res://assets/textures/control panel/bottom_normal.png" id="11_len6x"]
 [ext_resource type="Texture2D" uid="uid://b4yxyvj0dvvon" path="res://assets/textures/control panel/digits.png" id="11_yxia1"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mdbb4"]
@@ -221,6 +220,15 @@ metallic_specular = 0.75
 [sub_resource type="BoxMesh" id="BoxMesh_1ykkq"]
 material = SubResource("StandardMaterial3D_753fb")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_81s7u"]
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.117647, 0.627451, 0.207843, 1)
+emission = Color(0.627451, 0, 0, 1)
+backlight = Color(0.878431, 0, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_1cywn"]
+material = SubResource("StandardMaterial3D_81s7u")
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dh6h7"]
 vertex_color_use_as_albedo = true
 albedo_color = Color(0.976471, 0.227451, 0.184314, 1)
@@ -242,13 +250,25 @@ uv1_scale = Vector3(3, 2, 0)
 [sub_resource type="BoxMesh" id="BoxMesh_om1s4"]
 material = SubResource("StandardMaterial3D_b3ft8")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g11rw"]
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0.54902, 0.0901961, 1)
+emission_enabled = true
+emission = Color(0.827451, 0.388235, 0, 1)
+emission_energy_multiplier = 3.5
+backlight = Color(1, 0.396078, 0, 1)
+refraction_scale = -0.29
+disable_receive_shadows = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_7yy83"]
+material = SubResource("StandardMaterial3D_g11rw")
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_36yjj"]
 albedo_color = Color(0.788235, 0.788235, 0.788235, 1)
 metallic = 0.25
 metallic_specular = 0.95
 normal_enabled = true
 normal_scale = 0.04
-normal_texture = ExtResource("11_len6x")
 clearcoat = 0.25
 clearcoat_roughness = 0.15
 anisotropy = 0.95
@@ -260,9 +280,6 @@ uv1_triplanar_sharpness = 4.92459
 material = SubResource("StandardMaterial3D_36yjj")
 
 [sub_resource type="BoxMesh" id="BoxMesh_x5hsq"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_bmitq"]
-size = Vector3(2, 1.3, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xlalo"]
 vertex_color_use_as_albedo = true
@@ -290,6 +307,9 @@ metallic_specular = 0.75
 
 [sub_resource type="BoxMesh" id="BoxMesh_wwttq"]
 material = SubResource("StandardMaterial3D_5i143")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bmitq"]
+size = Vector3(2, 1.3, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_245cj"]
 albedo_texture = ExtResource("1_emgwm")
@@ -574,8 +594,40 @@ mesh = SubResource("BoxMesh_105ye")
 transform = Transform3D(1, 0, 0, 0, 0.8, 0, 0, 0, 0.3, 0, 0.45, 0)
 mesh = SubResource("BoxMesh_1ykkq")
 
+[node name="Button1" type="MeshInstance3D" parent="Room/Control_Panel"]
+transform = Transform3D(0.05, 0, 0, 0, 0.00945519, -0.0162784, 0, 0.00325568, 0.0472759, -0.7, 0.794, 0.337)
+mesh = SubResource("CylinderMesh_1cywn")
+
+[node name="Button2" type="MeshInstance3D" parent="Room/Control_Panel"]
+transform = Transform3D(0.05, 0, 0, 0, 0.00945519, -0.0162784, 0, 0.00325568, 0.0472759, -0.6, 0.794, 0.337)
+mesh = SubResource("CylinderMesh_1cywn")
+
+[node name="Button3" type="MeshInstance3D" parent="Room/Control_Panel"]
+transform = Transform3D(0.05, 0, 0, 0, 0.00945519, -0.0162784, 0, 0.00325568, 0.0472759, -0.5, 0.794, 0.337)
+mesh = SubResource("CylinderMesh_qtgl1")
+
+[node name="Button4" type="MeshInstance3D" parent="Room/Control_Panel"]
+transform = Transform3D(0.05, 0, 0, 0, 0.00945519, -0.0162784, 0, 0.00325568, 0.0472759, -0.1, 0.794, 0.337)
+mesh = SubResource("CylinderMesh_1cywn")
+
 [node name="Button5" type="MeshInstance3D" parent="Room/Control_Panel"]
-transform = Transform3D(0.05, 0, 0, 0, 0.00945519, -0.0162784, 0, 0.00325568, 0.0472759, 0, 0.793743, 0.337034)
+transform = Transform3D(0.05, 0, 0, 0, 0.00945519, -0.0162784, 0, 0.00325568, 0.0472759, 0, 0.794, 0.337)
+mesh = SubResource("CylinderMesh_1cywn")
+
+[node name="Button6" type="MeshInstance3D" parent="Room/Control_Panel"]
+transform = Transform3D(0.05, 0, 0, 0, 0.00945519, -0.0162784, 0, 0.00325568, 0.0472759, 0.1, 0.794, 0.337)
+mesh = SubResource("CylinderMesh_qtgl1")
+
+[node name="Button7" type="MeshInstance3D" parent="Room/Control_Panel"]
+transform = Transform3D(0.05, 0, 0, 0, 0.00945519, -0.0162784, 0, 0.00325568, 0.0472759, 0.5, 0.794, 0.337)
+mesh = SubResource("CylinderMesh_1cywn")
+
+[node name="Button8" type="MeshInstance3D" parent="Room/Control_Panel"]
+transform = Transform3D(0.05, 0, 0, 0, 0.00945519, -0.0162784, 0, 0.00325568, 0.0472759, 0.6, 0.794, 0.337)
+mesh = SubResource("CylinderMesh_1cywn")
+
+[node name="Button9" type="MeshInstance3D" parent="Room/Control_Panel"]
+transform = Transform3D(0.05, 0, 0, 0, 0.00945519, -0.0162784, 0, 0.00325568, 0.0472759, 0.7, 0.794, 0.337)
 mesh = SubResource("CylinderMesh_qtgl1")
 
 [node name="Digits1" type="MeshInstance3D" parent="Room/Control_Panel"]
@@ -590,6 +642,48 @@ mesh = SubResource("BoxMesh_om1s4")
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.02, 0.595, 1.19, -0.338)
 mesh = SubResource("BoxMesh_om1s4")
 
+[node name="Light_Indicator_1" type="MeshInstance3D" parent="Room/Control_Panel"]
+transform = Transform3D(0.05, 0, 0, 0, 0.0472759, -0.0162784, 0, 0.0162784, 0.0472759, -0.6, 0.826, 0.212)
+mesh = SubResource("SphereMesh_7yy83")
+
+[node name="Light" type="OmniLight3D" parent="Room/Control_Panel/Light_Indicator_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.221, 0)
+light_color = Color(1, 0.392157, 0, 1)
+light_energy = 0.1
+light_size = 0.05
+light_bake_mode = 1
+distance_fade_begin = 0.0
+distance_fade_length = 0.5
+omni_range = 0.228
+
+[node name="Light_Indicator_2" type="MeshInstance3D" parent="Room/Control_Panel"]
+transform = Transform3D(0.05, 0, 0, 0, 0.0472759, -0.0162784, 0, 0.0162784, 0.0472759, 0, 0.826026, 0.211637)
+mesh = SubResource("SphereMesh_7yy83")
+
+[node name="Light" type="OmniLight3D" parent="Room/Control_Panel/Light_Indicator_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.221, 0)
+light_color = Color(1, 0.392157, 0, 1)
+light_energy = 0.1
+light_size = 0.05
+light_bake_mode = 1
+distance_fade_begin = 0.0
+distance_fade_length = 0.5
+omni_range = 0.228
+
+[node name="Light_Indicator_3" type="MeshInstance3D" parent="Room/Control_Panel"]
+transform = Transform3D(0.05, 0, 0, 0, 0.0472759, -0.0162784, 0, 0.0162784, 0.0472759, 0.6, 0.826, 0.212)
+mesh = SubResource("SphereMesh_7yy83")
+
+[node name="Light" type="OmniLight3D" parent="Room/Control_Panel/Light_Indicator_3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.221, 0)
+light_color = Color(1, 0.392157, 0, 1)
+light_energy = 0.1
+light_size = 0.05
+light_bake_mode = 1
+distance_fade_begin = 0.0
+distance_fade_length = 0.5
+omni_range = 0.228
+
 [node name="Main" type="MeshInstance3D" parent="Room/Control_Panel"]
 transform = Transform3D(2, 0, 0, 0, 0.0945519, -0.325568, 0, 0.0325568, 0.945519, 0, 0.835, 0.043)
 mesh = SubResource("BoxMesh_bwnds")
@@ -597,10 +691,6 @@ mesh = SubResource("BoxMesh_bwnds")
 [node name="Header" type="MeshInstance3D" parent="Room/Control_Panel"]
 transform = Transform3D(2, 0, 0, 0, 0.4, 0, 0, 0, 0.1, 0, 1.15, -0.396984)
 mesh = SubResource("BoxMesh_x5hsq")
-
-[node name="Collider" type="CollisionShape3D" parent="Room/Control_Panel"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.05)
-shape = SubResource("BoxShape3D_bmitq")
 
 [node name="Main_Left_Border" type="MeshInstance3D" parent="Room/Control_Panel"]
 transform = Transform3D(0.05, 0, 0, 0, 0.0945519, -0.325568, 0, 0.0325568, 0.945519, -1.02245, 0.835, 0.0429993)
@@ -621,6 +711,10 @@ mesh = SubResource("BoxMesh_ny3xf")
 [node name="Main_Front_Panel" type="MeshInstance3D" parent="Room/Control_Panel"]
 transform = Transform3D(2.1, 0, 0, 0, 0.0945519, -0.0162784, 0, 0.0325568, 0.0472759, 0, 0.662917, 0.537859)
 mesh = SubResource("BoxMesh_wwttq")
+
+[node name="Collider" type="CollisionShape3D" parent="Room/Control_Panel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.0499992)
+shape = SubResource("BoxShape3D_bmitq")
 
 [node name="Door" parent="Room" instance=ExtResource("6_oycqh")]
 transform = Transform3D(1.78873e-10, 0, -0.015, 0, 0.015, 0, 0.015, 0, 1.78873e-10, -10.01, 0, -20.5)
