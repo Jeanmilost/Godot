@@ -1,7 +1,7 @@
 [gd_scene load_steps=89 format=3 uid="uid://bvp7ktqhfeper"]
 
+[ext_resource type="Script" path="res://source code/environment.gd" id="1_1q7i7"]
 [ext_resource type="Texture2D" uid="uid://cfiumrmwjigy8" path="res://assets/textures/corridor/ground.tga" id="1_emgwm"]
-[ext_resource type="Script" path="res://scenes/environment.gd" id="1_hf86y"]
 [ext_resource type="AudioStream" uid="uid://byinp8jp2ier2" path="res://assets/Sounds/footsteps_concrete_corridor.mp3" id="1_kktod"]
 [ext_resource type="AudioStream" uid="uid://b2e5peayg2ruj" path="res://assets/Sounds/door_opening.mp3" id="2_4bfqs"]
 [ext_resource type="Texture2D" uid="uid://d4gk3uy3lgkvg" path="res://assets/textures/corridor/ground_metallic.tga" id="2_6lt16"]
@@ -412,7 +412,7 @@ height = 0.5
 size = Vector3(9.5, 0.2, 0.1)
 
 [node name="Environment" type="Node3D"]
-script = ExtResource("1_hf86y")
+script = ExtResource("1_1q7i7")
 
 [node name="Door" type="Node3D" parent="."]
 
