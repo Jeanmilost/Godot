@@ -4,6 +4,7 @@ const StateMachine = preload("res://source code/state_machine.gd")
 
 # components
 @onready var g_Pivot      = $Pivot
+@onready var g_Fire       = $Pivot/Model/laure/Game_engine/Skeleton3D/cl_gun_left_handMesh/Fire
 @onready var g_Animations = $AnimationTree
 @onready var g_WalkSound  = $Sounds/Walk
 @onready var g_RunSound   = $Sounds/Run
@@ -16,6 +17,10 @@ var g_StateMachine = null
 const g_WalkingSpeed  = 1.5
 const g_RunningSpeed  = 3
 const g_RotationSpeed = 4
+const g_FireTime      = 0.01
+
+# values
+var g_FireTimestamp = 0.0
 
 # flags
 var g_DoorOpening     = false
@@ -27,12 +32,16 @@ var g_FireSoundPlayed = false
 ##
 func _ready():
 	g_StateMachine = StateMachine.new(g_Animations)
+	g_Fire.visible = false
 
 ###
 # Called every frame at a fixed rate, which allows any processing that requires the physics values
 #@param delta - elapsed time in seconds since the previous call
 ##
 func _physics_process(delta):
+	# get current time
+	var curTime = Time.get_ticks_msec()
+
 	# is door opening?
 	if g_DoorOpening:
 		# stop the walking sound
@@ -120,6 +129,10 @@ func _physics_process(delta):
 		if g_RunSound.is_playing():
 			g_RunSound.stop();
 
+	# hide the fire effect if fire time was elapsed
+	if (curTime >= g_FireTimestamp + g_FireTime):
+		g_Fire.visible = false
+	
 	# play the gun fire sound
 	if isPointingGun && g_IsFiring && !g_FireSoundPlayed:
 		if g_WalkSound.is_playing():
@@ -132,6 +145,8 @@ func _physics_process(delta):
 			g_FireSound.play();
 
 		g_FireSoundPlayed = true
+		g_Fire.visible    = true
+		g_FireTimestamp   = Time.get_ticks_msec()
 
 	move_and_slide()
 
@@ -156,7 +171,9 @@ func _on_animation_tree_animation_finished(anim_name):
 	if anim_name != "fire":
 		return
 
+	# reset fire status
 	g_IsFiring        = false
 	g_FireSoundPlayed = false
 
+	# also force the state machine to reset (otherwise fire animation cannot be run again)
 	g_StateMachine._set_state(StateMachine.IEState.S_Fire_Idle)
