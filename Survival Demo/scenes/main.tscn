@@ -135,7 +135,7 @@ shape = SubResource("BoxShape3D_1hnl8")
 transform = Transform3D(-0.53033, 0.53033, -2.31815e-08, 0, -3.27835e-08, -0.75, -0.53033, -0.53033, 2.31815e-08, -1.02885, 0.0532857, -0.868205)
 
 [node name="Zombie" parent="Scene" instance=ExtResource("5_elhyc")]
-transform = Transform3D(-0.819152, 0, 0.573576, 0, 1, 0, -0.573576, 0, -0.819152, -15, 0.075, -16)
+transform = Transform3D(-0.819152, 0, 0.573576, 0, 1, 0, -0.573576, 0, -0.819152, -15, 0.053, -16)
 
 [node name="Sounds" type="Node" parent="."]
 

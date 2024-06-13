@@ -1,5 +1,6 @@
 extends CharacterBody3D
 
+# import the state machine
 const StateMachine = preload("res://source code/state_machine.gd")
 
 # components
