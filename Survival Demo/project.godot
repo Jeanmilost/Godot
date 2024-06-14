@@ -66,3 +66,7 @@ fire={
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":10,"pressure":0.0,"pressed":false,"script":null)
 ]
 }
+
+[navigation]
+
+3d/default_cell_height=0.01

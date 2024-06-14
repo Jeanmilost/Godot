@@ -149,6 +149,7 @@ func _physics_process(delta):
 		g_Fire.visible    = true
 		g_FireTimestamp   = Time.get_ticks_msec()
 
+	# apply the player changes
 	move_and_slide()
 
 ###

@@ -5,7 +5,7 @@
 class_name StateMachine
 
 # states
-enum IEState {S_Idle, S_Walk, S_Run, S_Fire_Idle, S_Fire, S_Repulse, S_Hit, S_Die}
+enum IEState {S_Idle, S_Walk, S_Run, S_Attack, S_Fire_Idle, S_Fire, S_Repulse, S_Hit, S_Die}
 
 # properties
 var m_Animations = null
@@ -47,6 +47,7 @@ func run():
 			m_Animations.set("parameters/conditions/isIdle",      true)
 			m_Animations.set("parameters/conditions/isWalking",   false)
 			m_Animations.set("parameters/conditions/isRunning",   false)
+			m_Animations.set("parameters/conditions/isAttacking", false)
 			m_Animations.set("parameters/conditions/isFireIdle",  false)
 			m_Animations.set("parameters/conditions/isFiring",    false)
 			m_Animations.set("parameters/conditions/isRepulsing", false)
@@ -57,6 +58,7 @@ func run():
 			m_Animations.set("parameters/conditions/isIdle",      false)
 			m_Animations.set("parameters/conditions/isWalking",   true)
 			m_Animations.set("parameters/conditions/isRunning",   false)
+			m_Animations.set("parameters/conditions/isAttacking", false)
 			m_Animations.set("parameters/conditions/isFireIdle",  false)
 			m_Animations.set("parameters/conditions/isFiring",    false)
 			m_Animations.set("parameters/conditions/isRepulsing", false)
@@ -67,6 +69,18 @@ func run():
 			m_Animations.set("parameters/conditions/isIdle",      false)
 			m_Animations.set("parameters/conditions/isWalking",   false)
 			m_Animations.set("parameters/conditions/isRunning",   true)
+			m_Animations.set("parameters/conditions/isAttacking", false)
+			m_Animations.set("parameters/conditions/isFireIdle",  false)
+			m_Animations.set("parameters/conditions/isFiring",    false)
+			m_Animations.set("parameters/conditions/isRepulsing", false)
+			m_Animations.set("parameters/conditions/isHit",       false)
+			m_Animations.set("parameters/conditions/isDying",     false)
+
+		IEState.S_Attack:
+			m_Animations.set("parameters/conditions/isIdle",      false)
+			m_Animations.set("parameters/conditions/isWalking",   false)
+			m_Animations.set("parameters/conditions/isRunning",   false)
+			m_Animations.set("parameters/conditions/isAttacking", true)
 			m_Animations.set("parameters/conditions/isFireIdle",  false)
 			m_Animations.set("parameters/conditions/isFiring",    false)
 			m_Animations.set("parameters/conditions/isRepulsing", false)
@@ -77,6 +91,7 @@ func run():
 			m_Animations.set("parameters/conditions/isIdle",      false)
 			m_Animations.set("parameters/conditions/isWalking",   false)
 			m_Animations.set("parameters/conditions/isRunning",   false)
+			m_Animations.set("parameters/conditions/isAttacking", false)
 			m_Animations.set("parameters/conditions/isFireIdle",  true)
 			m_Animations.set("parameters/conditions/isFiring",    false)
 			m_Animations.set("parameters/conditions/isRepulsing", false)
@@ -87,6 +102,7 @@ func run():
 			m_Animations.set("parameters/conditions/isIdle",      false)
 			m_Animations.set("parameters/conditions/isWalking",   false)
 			m_Animations.set("parameters/conditions/isRunning",   false)
+			m_Animations.set("parameters/conditions/isAttacking", false)
 			m_Animations.set("parameters/conditions/isFireIdle",  false)
 			m_Animations.set("parameters/conditions/isFiring",    true)
 			m_Animations.set("parameters/conditions/isRepulsing", false)
@@ -97,6 +113,7 @@ func run():
 			m_Animations.set("parameters/conditions/isIdle",      false)
 			m_Animations.set("parameters/conditions/isWalking",   false)
 			m_Animations.set("parameters/conditions/isRunning",   false)
+			m_Animations.set("parameters/conditions/isAttacking", false)
 			m_Animations.set("parameters/conditions/isFireIdle",  false)
 			m_Animations.set("parameters/conditions/isFiring",    false)
 			m_Animations.set("parameters/conditions/isRepulsing", true)
@@ -107,6 +124,7 @@ func run():
 			m_Animations.set("parameters/conditions/isIdle",      false)
 			m_Animations.set("parameters/conditions/isWalking",   false)
 			m_Animations.set("parameters/conditions/isRunning",   false)
+			m_Animations.set("parameters/conditions/isAttacking", false)
 			m_Animations.set("parameters/conditions/isFireIdle",  false)
 			m_Animations.set("parameters/conditions/isFiring",    false)
 			m_Animations.set("parameters/conditions/isRepulsing", false)
@@ -117,6 +135,7 @@ func run():
 			m_Animations.set("parameters/conditions/isIdle",      false)
 			m_Animations.set("parameters/conditions/isWalking",   false)
 			m_Animations.set("parameters/conditions/isRunning",   false)
+			m_Animations.set("parameters/conditions/isAttacking", false)
 			m_Animations.set("parameters/conditions/isFireIdle",  false)
 			m_Animations.set("parameters/conditions/isFiring",    false)
 			m_Animations.set("parameters/conditions/isRepulsing", false)
@@ -127,6 +146,7 @@ func run():
 			m_Animations.set("parameters/conditions/isIdle",      false)
 			m_Animations.set("parameters/conditions/isWalking",   false)
 			m_Animations.set("parameters/conditions/isRunning",   false)
+			m_Animations.set("parameters/conditions/isAttacking", false)
 			m_Animations.set("parameters/conditions/isFireIdle",  false)
 			m_Animations.set("parameters/conditions/isFiring",    false)
 			m_Animations.set("parameters/conditions/isRepulsing", false)

@@ -36,6 +36,10 @@ var g_MsgTrialStamp = 0
 # Emitted when the door opening sequence is running
 signal onDoorOpening
 
+# Emitted when the player enters or leaves the labo room
+signal onPlayerEntersLaboRoom
+signal onPlayerLeavesLaboRoom
+
 ###
 # Called when the node enters the scene tree for the first time
 ##
@@ -291,18 +295,20 @@ func _on_trigger_7_body_exited(body):
 ##
 func _on_environment_on_door_anim_finished():
 	if g_ExitingRoom:
-		#place the player on the next room
+		# place the player in the corridor
 		g_Player.position.x = -2.5
 		g_Player.position.z = -6.6
 		g_Player.rotation.y = -deg_to_rad(270)
 
-		# enable the room first camera
+		# enable the third corridor camera
 		g_DoorCamera.current = false
 		g_Camera3.current    = true
 
 		g_ExitingRoom = false
+
+		onPlayerLeavesLaboRoom.emit()
 	else:
-		#place the player on the next room
+		# place the player in the labo room
 		g_Player.position.x = -11
 		g_Player.position.z = -20
 		g_Player.rotation.y = -deg_to_rad(90)
@@ -310,3 +316,5 @@ func _on_environment_on_door_anim_finished():
 		# enable the room first camera
 		g_DoorCamera.current = false
 		g_Camera4.current    = true
+
+		onPlayerEntersLaboRoom.emit()
