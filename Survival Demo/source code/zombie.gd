@@ -12,13 +12,23 @@ const StateMachine = preload("res://source code/state_machine.gd")
 var g_StateMachine = null
 
 # bot constants
-const g_Speed       = 0.5
-const g_Accel       = 0.25
-const g_MinDistance = 1.1
+const g_Speed          = 0.5
+const g_Accel          = 0.25
+const g_MinDistance    = 1.1
+const g_MinHitDistance = 1.2
+const g_HitAllowedTime = 1100.0
+const g_HitMissedTime  = 1300.0
+
+# values
+var g_AttackingTimestamp = 0.0
 
 # flags
-var g_IsActivated = false
-var g_Attacking   = false
+var g_IsActivated  = false
+var g_Attacking    = false
+var g_HitPerformed = false
+
+# Emitted when the bot hits the player
+signal onHitPlayer
 
 ###
 # Called when the node enters the scene tree for the first time
@@ -35,6 +45,9 @@ func _physics_process(delta):
 	if (!g_IsActivated):
 		return
 
+	# get current time
+	var curTime = Time.get_ticks_msec()
+
 	# set the player as target for the navigation agent
 	g_NavAgent.target_position = g_Target.global_position
 
@@ -47,6 +60,8 @@ func _physics_process(delta):
 		if (g_Attacking):
 			g_Animations.active = false
 			g_Animations.active = true
+
+			g_AttackingTimestamp = Time.get_ticks_msec()
 
 	# still not attacking?
 	if !g_Attacking:
@@ -63,6 +78,13 @@ func _physics_process(delta):
 		# keep the bot facing the player while attacking
 		var direction = global_position - g_Target.global_position
 		rotation.y    = atan2(-direction.x, -direction.z)
+
+		# can hit the player?
+		if !g_HitPerformed && curTime >= g_AttackingTimestamp + g_HitAllowedTime && curTime < g_AttackingTimestamp + g_HitMissedTime:
+			# if player is close enough to the bot, it will be hit
+			if IsCloseTo(global_position, g_Target.global_position, g_MinHitDistance):
+				onHitPlayer.emit()
+				g_HitPerformed = true
 
 	# get bot state
 	var isIdle    = velocity == Vector3.ZERO && !g_Attacking
@@ -96,11 +118,12 @@ func IsCloseTo(vec1, vec2, minDist):
 #@param anim_name - animation name which just finished
 ##
 func _on_animation_tree_animation_finished(anim_name):
-	# ignore all animation but the fire one
+	# ignore all animation but the attack one
 	if anim_name != "Attack":
 		return
 
-	g_Attacking = false
+	g_Attacking    = false
+	g_HitPerformed = false
 
 ###
 # Called when the player enters in the laboratory

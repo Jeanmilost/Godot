@@ -189,3 +189,4 @@ horizontal_alignment = 1
 [connection signal="body_exited" from="Scene/Environment/Trigger_6" to="." method="_on_trigger_6_body_exited"]
 [connection signal="body_entered" from="Scene/Environment/Trigger_7" to="." method="_on_trigger_7_body_entered"]
 [connection signal="body_exited" from="Scene/Environment/Trigger_7" to="." method="_on_trigger_7_body_exited"]
+[connection signal="onHitPlayer" from="Scene/Zombie" to="Scene/Laure" method="_on_zombie_on_hit_player"]

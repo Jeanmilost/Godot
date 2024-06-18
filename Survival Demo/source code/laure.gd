@@ -26,6 +26,7 @@ var g_FireTimestamp = 0.0
 # flags
 var g_DoorOpening     = false
 var g_IsFiring        = false
+var g_IsHit           = false
 var g_FireSoundPlayed = false
 
 ###
@@ -45,6 +46,14 @@ func _physics_process(delta):
 
 	# is door opening?
 	if g_DoorOpening:
+		# stop the walking sound
+		if g_WalkSound.is_playing():
+			g_WalkSound.stop();
+
+		return
+
+	# is player hit?
+	if g_IsHit:
 		# stop the walking sound
 		if g_WalkSound.is_playing():
 			g_WalkSound.stop();
@@ -169,6 +178,11 @@ func _on_environment_on_door_anim_finished():
 #@param anim_name - animation name which just finished
 ##
 func _on_animation_tree_animation_finished(anim_name):
+	# player was hit
+	if anim_name == "hit":
+		g_IsHit = false
+		return
+
 	# ignore all animation but the fire one
 	if anim_name != "fire":
 		return
@@ -179,3 +193,15 @@ func _on_animation_tree_animation_finished(anim_name):
 
 	# also force the state machine to reset (otherwise fire animation cannot be run again)
 	g_StateMachine._set_state(StateMachine.IEState.S_Fire_Idle)
+
+###
+# Called when the bot hits the player
+##
+func _on_zombie_on_hit_player():
+	# set the state machine to hit
+	g_StateMachine._set_state(StateMachine.IEState.S_Hit)
+
+	# apply the state machine
+	g_StateMachine.run()
+
+	g_IsHit = true
