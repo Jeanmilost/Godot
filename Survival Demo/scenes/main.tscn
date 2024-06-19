@@ -171,6 +171,7 @@ horizontal_alignment = 1
 [connection signal="onDoorOpening" from="." to="Scene/Laure" method="_on_main_on_door_opening"]
 [connection signal="onPlayerEntersLaboRoom" from="." to="Scene/Zombie" method="_on_main_on_player_enters_labo_room"]
 [connection signal="onPlayerLeavesLaboRoom" from="." to="Scene/Zombie" method="_on_main_on_player_leaves_labo_room"]
+[connection signal="onPlayerDied" from="Scene/Laure" to="Scene/Zombie" method="_on_laure_on_player_died"]
 [connection signal="onDoorAnimFinished" from="Scene/Environment" to="." method="_on_environment_on_door_anim_finished"]
 [connection signal="onDoorAnimFinished" from="Scene/Environment" to="Scene/Laure" method="_on_environment_on_door_anim_finished"]
 [connection signal="area_entered" from="Scene/Environment/Trigger_1" to="." method="_on_trigger_1_area_entered"]

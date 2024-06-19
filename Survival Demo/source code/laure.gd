@@ -10,6 +10,7 @@ const StateMachine = preload("res://source code/state_machine.gd")
 @onready var g_WalkSound  = $Sounds/Walk
 @onready var g_RunSound   = $Sounds/Run
 @onready var g_FireSound  = $Sounds/Fire
+@onready var g_GunRay     = $GunRay
 
 # game objects
 var g_StateMachine = null
@@ -22,12 +23,16 @@ const g_FireTime      = 0.01
 
 # values
 var g_FireTimestamp = 0.0
+var g_Energy        = 5
 
 # flags
 var g_DoorOpening     = false
 var g_IsFiring        = false
 var g_IsHit           = false
 var g_FireSoundPlayed = false
+
+# Emitted when the player died
+signal onPlayerDied
 
 ###
 # Called when the node enters the scene tree for the first time
@@ -41,6 +46,15 @@ func _ready():
 #@param delta - elapsed time in seconds since the previous call
 ##
 func _physics_process(delta):
+	if g_Energy <= 0:
+		# player is dying
+		g_StateMachine._set_state(StateMachine.IEState.S_Die)
+
+		# apply the state machine
+		g_StateMachine.run()
+
+		return
+
 	# get current time
 	var curTime = Time.get_ticks_msec()
 
@@ -158,6 +172,13 @@ func _physics_process(delta):
 		g_Fire.visible    = true
 		g_FireTimestamp   = Time.get_ticks_msec()
 
+	if isPointingGun:
+		if g_GunRay.is_colliding():
+			var gunCollider = g_GunRay.get_collider()
+			
+			if gunCollider.name == "Zombie":
+				var aName2 = gunCollider.name
+
 	# apply the player changes
 	move_and_slide()
 
@@ -203,5 +224,12 @@ func _on_zombie_on_hit_player():
 
 	# apply the state machine
 	g_StateMachine.run()
+
+	# remove 1 point of energy
+	g_Energy = g_Energy - 1
+
+	# no longer energy, player died
+	if !g_Energy:
+		onPlayerDied.emit()
 
 	g_IsHit = true

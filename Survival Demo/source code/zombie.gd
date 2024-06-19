@@ -26,6 +26,7 @@ var g_AttackingTimestamp = 0.0
 var g_IsActivated  = false
 var g_Attacking    = false
 var g_HitPerformed = false
+var g_PlayerDied   = false
 
 # Emitted when the bot hits the player
 signal onHitPlayer
@@ -48,47 +49,49 @@ func _physics_process(delta):
 	# get current time
 	var curTime = Time.get_ticks_msec()
 
-	# set the player as target for the navigation agent
-	g_NavAgent.target_position = g_Target.global_position
+	# player still alive?
+	if !g_PlayerDied:
+		# set the player as target for the navigation agent
+		g_NavAgent.target_position = g_Target.global_position
 
-	# not attacking?
-	if !g_Attacking:
-		# check if close enough to attack the player
-		g_Attacking = IsCloseTo(global_position, g_Target.global_position, g_MinDistance)
+		# not attacking?
+		if !g_Attacking:
+			# check if close enough to attack the player
+			g_Attacking = !g_PlayerDied && IsCloseTo(global_position, g_Target.global_position, g_MinDistance)
 
-		# if attacking, restart the animation
-		if (g_Attacking):
-			g_Animations.active = false
-			g_Animations.active = true
+			# if attacking, restart the animation
+			if (g_Attacking):
+				g_Animations.active = false
+				g_Animations.active = true
 
-			g_AttackingTimestamp = Time.get_ticks_msec()
+				g_AttackingTimestamp = Time.get_ticks_msec()
 
-	# still not attacking?
-	if !g_Attacking:
-		# get the bot next position
-		var nextPos = g_NavAgent.get_next_path_position()
+		# still not attacking?
+		if !g_Attacking:
+			# get the bot next position
+			var nextPos = g_NavAgent.get_next_path_position()
 
-		# calculate the move direction
-		var direction = (nextPos - global_position).normalized()
+			# calculate the move direction
+			var direction = (nextPos - global_position).normalized()
 
-		# calculate the bot position and rotation
-		velocity   = velocity.lerp(direction * g_Speed, g_Accel * delta)
-		rotation.y = atan2(velocity.x, velocity.z)
-	else:
-		# keep the bot facing the player while attacking
-		var direction = global_position - g_Target.global_position
-		rotation.y    = atan2(-direction.x, -direction.z)
+			# calculate the bot position and rotation
+			velocity   = velocity.lerp(direction * g_Speed, g_Accel * delta)
+			rotation.y = atan2(velocity.x, velocity.z)
+		else:
+			# keep the bot facing the player while attacking
+			var direction = global_position - g_Target.global_position
+			rotation.y    = atan2(-direction.x, -direction.z)
 
-		# can hit the player?
-		if !g_HitPerformed && curTime >= g_AttackingTimestamp + g_HitAllowedTime && curTime < g_AttackingTimestamp + g_HitMissedTime:
-			# if player is close enough to the bot, it will be hit
-			if IsCloseTo(global_position, g_Target.global_position, g_MinHitDistance):
-				onHitPlayer.emit()
-				g_HitPerformed = true
+			# can hit the player?
+			if !g_HitPerformed && curTime >= g_AttackingTimestamp + g_HitAllowedTime && curTime < g_AttackingTimestamp + g_HitMissedTime:
+				# if player is close enough to the bot, it will be hit
+				if IsCloseTo(global_position, g_Target.global_position, g_MinHitDistance):
+					onHitPlayer.emit()
+					g_HitPerformed = true
 
 	# get bot state
-	var isIdle    = velocity == Vector3.ZERO && !g_Attacking
-	var isWalking = velocity != Vector3.ZERO && !g_Attacking
+	var isIdle    = (velocity == Vector3.ZERO && !g_Attacking) || g_PlayerDied
+	var isWalking =  velocity != Vector3.ZERO && !g_Attacking
 
 	# change the animation state depending on the bot action
 	if isIdle:
@@ -100,6 +103,10 @@ func _physics_process(delta):
 
 	# apply the state machine
 	g_StateMachine.run()
+
+	# no longer move and slide the bot if player died (otherwise for an unknown reason it  will drift)
+	if g_PlayerDied:
+		return
 
 	# apply the bot changes
 	move_and_slide()
@@ -136,3 +143,9 @@ func _on_main_on_player_enters_labo_room():
 ##
 func _on_main_on_player_leaves_labo_room():
 	g_IsActivated = false
+
+###
+#Called when the player died
+##
+func _on_laure_on_player_died():
+	g_PlayerDied = true
