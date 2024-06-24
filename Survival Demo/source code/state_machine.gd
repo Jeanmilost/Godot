@@ -32,11 +32,28 @@ func _get_state():
 func _set_state(state):
 	# if state changed, force animation to restart, otherwise non looping animations will not play
 	if state != m_State:
-		m_Animations.active = false
-		m_Animations.active = true
+		m_Animations.advance(0.0)
 
 	# set new state
 	m_State = state
+
+###
+# Sets the current machine state
+#@param state - current machine state
+#@param start_time - start time
+##
+func _set_delayed_state(state, start_time):
+	if state != m_State:
+		m_Animations.advance(start_time)
+
+	# set new state
+	m_State = state
+
+###
+# Resets the animation
+##
+func _reset():
+	m_Animations.advance(0.0)
 
 ###
 # Runs the state machine

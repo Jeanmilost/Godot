@@ -5,6 +5,7 @@ const StateMachine = preload("res://source code/state_machine.gd")
 
 # components
 @onready var g_Animations = $AnimationTree
+@onready var g_AnimPlayer = $Pivot/Zombie/AnimationPlayer
 @onready var g_NavAgent   = $NavigationAgent
 @onready var g_Target     = $"../Laure"
 
@@ -21,11 +22,13 @@ const g_HitMissedTime  = 1300.0
 
 # values
 var g_AttackingTimestamp = 0.0
+var g_Energy             = 5.0
 
 # flags
 var g_IsActivated  = false
 var g_Attacking    = false
 var g_HitPerformed = false
+var g_IsHit        = false
 var g_PlayerDied   = false
 
 # Emitted when the bot hits the player
@@ -43,14 +46,23 @@ func _ready():
 ##
 func _physics_process(delta):
 	# is bot inactive?
-	if (!g_IsActivated):
+	if !g_IsActivated:
+		return
+
+	if g_Energy <= 0:
+		# player is dying
+		g_StateMachine._set_state(StateMachine.IEState.S_Die)
+
+		# apply the state machine
+		g_StateMachine.run()
+
 		return
 
 	# get current time
 	var curTime = Time.get_ticks_msec()
 
-	# player still alive?
-	if !g_PlayerDied:
+	# player still alive and not hit?
+	if !g_PlayerDied && !g_IsHit:
 		# set the player as target for the navigation agent
 		g_NavAgent.target_position = g_Target.global_position
 
@@ -90,8 +102,8 @@ func _physics_process(delta):
 					g_HitPerformed = true
 
 	# get bot state
-	var isIdle    = (velocity == Vector3.ZERO && !g_Attacking) || g_PlayerDied
-	var isWalking =  velocity != Vector3.ZERO && !g_Attacking
+	var isIdle    = (velocity == Vector3.ZERO && !g_Attacking && !g_IsHit) || g_PlayerDied
+	var isWalking =  velocity != Vector3.ZERO && !g_Attacking && !g_IsHit
 
 	# change the animation state depending on the bot action
 	if isIdle:
@@ -100,12 +112,14 @@ func _physics_process(delta):
 		g_StateMachine._set_state(StateMachine.IEState.S_Walk)
 	elif g_Attacking:
 		g_StateMachine._set_state(StateMachine.IEState.S_Attack)
+	elif g_IsHit:
+		g_StateMachine._set_state(StateMachine.IEState.S_Hit)
 
 	# apply the state machine
 	g_StateMachine.run()
 
-	# no longer move and slide the bot if player died (otherwise for an unknown reason it  will drift)
-	if g_PlayerDied:
+	# no longer move and slide the bot if player died or if hit (otherwise for an unknown reason it will drift)
+	if g_PlayerDied || g_IsHit:
 		return
 
 	# apply the bot changes
@@ -125,6 +139,11 @@ func IsCloseTo(vec1, vec2, minDist):
 #@param anim_name - animation name which just finished
 ##
 func _on_animation_tree_animation_finished(anim_name):
+	# was bot hit?
+	if anim_name == "Hit":
+		g_IsHit = false
+		return
+
 	# ignore all animation but the attack one
 	if anim_name != "Attack":
 		return
@@ -145,7 +164,23 @@ func _on_main_on_player_leaves_labo_room():
 	g_IsActivated = false
 
 ###
-#Called when the player died
+# Called when the player hits the bot
+##
+func _on_laure_on_player_hit_bot():
+	# set the state machine to hit
+	g_StateMachine._set_delayed_state(StateMachine.IEState.S_Hit, 0.3)
+
+	# apply the state machine
+	g_StateMachine.run()
+
+	# remove 1 point of energy
+	if g_IsActivated && !g_IsHit:
+		g_Energy = g_Energy - 1
+
+	g_IsHit = true
+
+###
+# Called when the player died
 ##
 func _on_laure_on_player_died():
 	g_PlayerDied = true

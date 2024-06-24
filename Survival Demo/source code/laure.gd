@@ -1,5 +1,8 @@
 extends CharacterBody3D
 
+# player actions
+enum EPlayerAction {PA_Idle, PA_Walk, PA_Run, PA_Fire_Idle, PA_Fire, PA_Firing, PA_Hit, PA_Dead, PA_Paused}
+
 # import the state machine
 const StateMachine = preload("res://source code/state_machine.gd")
 
@@ -10,6 +13,8 @@ const StateMachine = preload("res://source code/state_machine.gd")
 @onready var g_WalkSound  = $Sounds/Walk
 @onready var g_RunSound   = $Sounds/Run
 @onready var g_FireSound  = $Sounds/Fire
+@onready var g_HitSound   = $Sounds/Hit
+@onready var g_DyingSound = $Sounds/Dying
 @onready var g_GunRay     = $GunRay
 
 # game objects
@@ -26,13 +31,118 @@ var g_FireTimestamp = 0.0
 var g_Energy        = 5
 
 # flags
-var g_DoorOpening     = false
-var g_IsFiring        = false
-var g_IsHit           = false
-var g_FireSoundPlayed = false
+var g_DoorOpening      = false
+var g_IsFiring         = false
+var g_IsHit            = false
+var g_FireSoundPlayed  = false
+var g_HitSoundPlayed   = false
+var g_DyingSoundPlayed = false
+
+# Emitted when the player hit the bot
+signal onPlayerHitBot
 
 # Emitted when the player died
 signal onPlayerDied
+
+###
+# Get the player state
+##
+func GetPlayerState(walk, run, aim, fire):
+	if g_DoorOpening:
+		return EPlayerAction.PA_Paused
+
+	if g_Energy <= 0:
+		return EPlayerAction.PA_Dead
+
+	if g_IsHit:
+		return EPlayerAction.PA_Hit
+
+	if g_IsFiring:
+		return EPlayerAction.PA_Firing
+
+	if aim:
+		if fire:
+			return EPlayerAction.PA_Fire
+
+		return EPlayerAction.PA_Fire_Idle
+
+	if walk:
+		if run:
+			return EPlayerAction.PA_Run
+
+		return EPlayerAction.PA_Walk
+
+	return EPlayerAction.PA_Idle
+
+###
+# Move the player
+#@param walking - if true, player is currently walking
+#@param running - if true, player will run instead of walk
+##
+func Move(walking, running):
+	# move the player
+	if walking:
+		var direction = g_Pivot.global_transform.basis.z.normalized()
+
+		if running:
+			velocity.x = direction.x * g_RunningSpeed
+			velocity.z = direction.z * g_RunningSpeed
+		else:
+			velocity.x = direction.x * g_WalkingSpeed
+			velocity.z = direction.z * g_WalkingSpeed
+	else:
+		if running:
+			velocity.x = move_toward(velocity.x, 0.0, g_RunningSpeed)
+			velocity.z = move_toward(velocity.z, 0.0, g_RunningSpeed)
+		else:
+			velocity.x = move_toward(velocity.x, 0.0, g_WalkingSpeed)
+			velocity.z = move_toward(velocity.z, 0.0, g_WalkingSpeed)
+
+###
+# Rotate the player
+#@param delta - elapsed time in seconds since the previous frame
+##
+func Rotate(delta):
+	if Input.is_action_pressed("turn_right"):
+		rotation.y -= delta * g_RotationSpeed 
+	elif Input.is_action_pressed("turn_left"):
+		rotation.y += delta * g_RotationSpeed
+
+###
+# Plays the walk sound
+##
+func PlayWalkSound():
+	# stop the running sound
+	if g_RunSound.is_playing():
+		g_RunSound.stop();
+
+	# play the walking sound
+	if !g_WalkSound.is_playing():
+		g_WalkSound.play();
+
+###
+# Plays the run sound
+##
+func PlayRunSound():
+	# stop the walking sound
+	if g_WalkSound.is_playing():
+		g_WalkSound.stop();
+
+	# play the running sound
+	if !g_RunSound.is_playing():
+		g_RunSound.play();
+
+###
+# Stops all the walk and run sounds
+##
+func StopWalkAndRunSounds():
+	# stop the walking sound
+	if g_WalkSound.is_playing():
+		g_WalkSound.stop();
+
+	# stop the running sound
+	if g_RunSound.is_playing():
+		g_RunSound.stop();
 
 ###
 # Called when the node enters the scene tree for the first time
@@ -46,141 +156,142 @@ func _ready():
 #@param delta - elapsed time in seconds since the previous call
 ##
 func _physics_process(delta):
-	if g_Energy <= 0:
-		# player is dying
-		g_StateMachine._set_state(StateMachine.IEState.S_Die)
-
-		# apply the state machine
-		g_StateMachine.run()
-
-		return
-
 	# get current time
 	var curTime = Time.get_ticks_msec()
 
-	# is door opening?
-	if g_DoorOpening:
-		# stop the walking sound
-		if g_WalkSound.is_playing():
-			g_WalkSound.stop();
+	# get input status
+	var walkPressed = Input.is_action_pressed("move_forward")
+	var runPressed  = Input.is_action_pressed("run_modifier_action")
+	var aimPressed  = Input.is_action_pressed("fire_modifier_action")
+	var firePressed = Input.is_action_pressed("fire")
 
-		return
+	var moved = false
 
-	# is player hit?
-	if g_IsHit:
-		# stop the walking sound
-		if g_WalkSound.is_playing():
-			g_WalkSound.stop();
+	# switch the player action to apply
+	match GetPlayerState(walkPressed, runPressed, aimPressed, firePressed):
+		EPlayerAction.PA_Paused:
+			StopWalkAndRunSounds()
+			return
 
-		return
+		EPlayerAction.PA_Idle:
+			# rotate the player
+			Rotate(delta)
 
-	# check if player is running
-	var isRunning = Input.is_action_pressed("run_modifier_action")
+			StopWalkAndRunSounds()
 
-	# check if player is pointing his gun
-	var isPointingGun = velocity == Vector3.ZERO && Input.is_action_pressed("fire_modifier_action")
+			g_StateMachine._set_state(StateMachine.IEState.S_Idle)
 
-	# rotate the player
-	if Input.is_action_pressed("turn_right"):
-		rotation.y -= delta * g_RotationSpeed 
-	elif Input.is_action_pressed("turn_left"):
-		rotation.y += delta * g_RotationSpeed
+		EPlayerAction.PA_Walk:
+			# rotate the player
+			Rotate(delta)
 
-	# move the player
-	if Input.is_action_pressed("move_forward") && !isPointingGun:
-		var direction = g_Pivot.global_transform.basis.z.normalized()
+			# move the player
+			Move(true, false)
 
-		if isRunning:
-			velocity.x = direction.x * g_RunningSpeed
-			velocity.z = direction.z * g_RunningSpeed
-		else:
-			velocity.x = direction.x * g_WalkingSpeed
-			velocity.z = direction.z * g_WalkingSpeed
-	else:
-		if isRunning:
-			velocity.x = move_toward(velocity.x, 0.0, g_RunningSpeed)
-			velocity.z = move_toward(velocity.z, 0.0, g_RunningSpeed)
-		else:
-			velocity.x = move_toward(velocity.x, 0.0, g_WalkingSpeed)
-			velocity.z = move_toward(velocity.z, 0.0, g_WalkingSpeed)
+			moved = true
 
-	# get player state
-	var isIdle    = velocity == Vector3.ZERO && !isPointingGun
-	var isWalking = velocity != Vector3.ZERO && !isPointingGun
+			PlayWalkSound()
 
-	if !isPointingGun:
-		g_IsFiring        = false
-		g_FireSoundPlayed = false
-
-	if !g_IsFiring:
-		g_IsFiring = Input.is_action_pressed("fire")
-
-	# change the animation state depending on the user action
-	if isIdle:
-		g_StateMachine._set_state(StateMachine.IEState.S_Idle)
-	elif isWalking:
-		if isRunning:
-			g_StateMachine._set_state(StateMachine.IEState.S_Run)
-		else:
 			g_StateMachine._set_state(StateMachine.IEState.S_Walk)
-	elif isPointingGun:
-		if g_IsFiring:
-			g_StateMachine._set_state(StateMachine.IEState.S_Fire)
-		else:
+
+		EPlayerAction.PA_Run:
+			# rotate the player
+			Rotate(delta)
+
+			# move the player
+			Move(true, true)
+
+			moved = true
+
+			PlayRunSound()
+
+			g_StateMachine._set_state(StateMachine.IEState.S_Run)
+
+		EPlayerAction.PA_Fire_Idle:
+			# rotate the player
+			Rotate(delta)
+
+			# move the player
+			Move(false, false)
+
+			moved = true
+
+			StopWalkAndRunSounds()
+
 			g_StateMachine._set_state(StateMachine.IEState.S_Fire_Idle)
+
+		EPlayerAction.PA_Fire:
+			# rotate the player
+			Rotate(delta)
+
+			# move the player
+			Move(false, false)
+
+			# configure the fire status
+			moved           = true
+			g_IsFiring      = true
+			g_Fire.visible  = true
+			g_FireTimestamp = Time.get_ticks_msec()
+
+			StopWalkAndRunSounds()
+
+			# play the fire sound
+			if !g_FireSound.is_playing():
+				g_FireSound.play();
+
+			# force the state machine to reset the animation by changing it before re-run the good
+			# one. Unfortunately calling advance() has no effect after the animation ends. Not a very
+			# good solution, but it works
+			g_StateMachine._set_state(StateMachine.IEState.S_Fire_Idle)
+			g_StateMachine.run()
+
+			g_StateMachine._set_state(StateMachine.IEState.S_Fire)
+
+		EPlayerAction.PA_Firing:
+			# hide the fire effect if fire time was elapsed
+			if (curTime >= g_FireTimestamp + g_FireTime):
+				g_Fire.visible = false
+
+			# is the gun ray hit something 
+			if g_GunRay.is_colliding():
+				# get the collider
+				var gunCollider = g_GunRay.get_collider()
+
+				# hit the bot?
+				if gunCollider.name == "Zombie":
+					onPlayerHitBot.emit()
+
+		EPlayerAction.PA_Hit:
+			StopWalkAndRunSounds()
+
+			# play the dying sound
+			if !g_HitSoundPlayed && !g_HitSound.is_playing():
+				g_HitSound.play();
+				g_HitSoundPlayed = true
+
+			g_StateMachine._set_state(StateMachine.IEState.S_Hit)
+
+		EPlayerAction.PA_Dead:
+			StopWalkAndRunSounds()
+
+			# play the dying sound
+			if !g_DyingSoundPlayed && !g_DyingSound.is_playing():
+				g_DyingSound.play();
+				g_DyingSoundPlayed = true
+
+			g_StateMachine._set_state(StateMachine.IEState.S_Die)
+
+		_:
+			StopWalkAndRunSounds()
+
+			g_StateMachine._set_state(StateMachine.IEState.S_Idle)
 
 	# apply the state machine
 	g_StateMachine.run()
 
-	# play the walk or run sound if player is walking or running
-	if isWalking:
-		if isRunning:
-			if g_WalkSound.is_playing():
-				g_WalkSound.stop();
-
-			if !g_RunSound.is_playing():
-				g_RunSound.play();
-		else:
-			if g_RunSound.is_playing():
-				g_RunSound.stop();
-
-			if !g_WalkSound.is_playing():
-				g_WalkSound.play();
-	else:
-		if g_WalkSound.is_playing():
-			g_WalkSound.stop();
-
-		if g_RunSound.is_playing():
-			g_RunSound.stop();
-
-	# hide the fire effect if fire time was elapsed
-	if (curTime >= g_FireTimestamp + g_FireTime):
-		g_Fire.visible = false
-	
-	# play the gun fire sound
-	if isPointingGun && g_IsFiring && !g_FireSoundPlayed:
-		if g_WalkSound.is_playing():
-			g_WalkSound.stop();
-
-		if g_RunSound.is_playing():
-			g_RunSound.stop();
-
-		if !g_FireSound.is_playing():
-			g_FireSound.play();
-
-		g_FireSoundPlayed = true
-		g_Fire.visible    = true
-		g_FireTimestamp   = Time.get_ticks_msec()
-
-	if isPointingGun:
-		if g_GunRay.is_colliding():
-			var gunCollider = g_GunRay.get_collider()
-			
-			if gunCollider.name == "Zombie":
-				var aName2 = gunCollider.name
-
 	# apply the player changes
-	move_and_slide()
+	if moved:
+		move_and_slide()
 
 ###
 # Called when laboratory door is opening
@@ -201,7 +312,8 @@ func _on_environment_on_door_anim_finished():
 func _on_animation_tree_animation_finished(anim_name):
 	# player was hit
 	if anim_name == "hit":
-		g_IsHit = false
+		g_IsHit          = false
+		g_HitSoundPlayed = false
 		return
 
 	# ignore all animation but the fire one
@@ -209,22 +321,12 @@ func _on_animation_tree_animation_finished(anim_name):
 		return
 
 	# reset fire status
-	g_IsFiring        = false
-	g_FireSoundPlayed = false
-
-	# also force the state machine to reset (otherwise fire animation cannot be run again)
-	g_StateMachine._set_state(StateMachine.IEState.S_Fire_Idle)
+	g_IsFiring = false
 
 ###
 # Called when the bot hits the player
 ##
 func _on_zombie_on_hit_player():
-	# set the state machine to hit
-	g_StateMachine._set_state(StateMachine.IEState.S_Hit)
-
-	# apply the state machine
-	g_StateMachine.run()
-
 	# remove 1 point of energy
 	g_Energy = g_Energy - 1
 
