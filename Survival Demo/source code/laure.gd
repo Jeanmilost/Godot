@@ -1,10 +1,10 @@
 extends CharacterBody3D
 
-# player actions
-enum EPlayerAction {PA_Idle, PA_Walk, PA_Run, PA_Fire_Idle, PA_Fire, PA_Firing, PA_Hit, PA_Dead, PA_Paused}
-
 # import the state machine
 const StateMachine = preload("res://source code/state_machine.gd")
+
+# player actions
+enum EPlayerAction {PA_Idle, PA_Walk, PA_Run, PA_Fire_Idle, PA_Fire, PA_Firing, PA_Hit, PA_Dead, PA_Paused}
 
 # components
 @onready var g_Pivot      = $Pivot
@@ -46,6 +46,11 @@ signal onPlayerDied
 
 ###
 # Get the player state
+#@param walk - if true, the walk key is pressed
+#@param run - if true, the run key is pressed
+#@param aim - if true, the aim key is pressed
+#@param fire - if true, the fire key is pressed
+#@return the player state
 ##
 func GetPlayerState(walk, run, aim, fire):
 	if g_DoorOpening:
