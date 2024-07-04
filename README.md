@@ -1,7 +1,8 @@
 # Godot Engine
 This repository contains several demo projects created with the Godot Engine.
 
-**Survival demo**
+## Demos
+### Survival demo
 This is a small demo showing a survival game scene, where a character need to explore a laboratory.
 ![Survival Demo Scene](Screenshots/SurvivalDemo.png)
 
