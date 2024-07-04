@@ -3,6 +3,9 @@ extends CharacterBody3D
 # import the state machine
 const StateMachine = preload("res://source code/state_machine.gd")
 
+# bot actions
+enum EBotAction {PA_Idle, PA_Walk, PA_Attack, PA_Attacking, PA_Hit, PA_Hitting, PA_Dead, PA_Paused}
+
 # components
 @onready var g_Animations = $AnimationTree
 @onready var g_AnimPlayer = $Pivot/Zombie/AnimationPlayer
@@ -29,10 +32,94 @@ var g_IsActivated  = false
 var g_Attacking    = false
 var g_HitPerformed = false
 var g_IsHit        = false
+var g_IsHitting    = false
 var g_PlayerDied   = false
 
 # Emitted when the bot hits the player
 signal onHitPlayer
+
+###
+# Get the bot state
+#@return the bot state
+##
+func GetBotState():
+	# is bot inactive?
+	if !g_IsActivated:
+		return EBotAction.PA_Paused
+
+	if g_Energy <= 0:
+		return EBotAction.PA_Dead
+
+	if g_IsHitting:
+		return EBotAction.PA_Hitting
+
+	if g_IsHit:
+		return EBotAction.PA_Hit
+
+	if g_Attacking:
+		return EBotAction.PA_Attacking
+
+	if DoStartAttack():
+		return EBotAction.PA_Attack
+
+	if  !g_PlayerDied:
+		return EBotAction.PA_Walk
+
+	return EBotAction.PA_Idle
+
+###
+# Moves and rotates the bot toward the player
+#@param elapsedTime - elapsed time in seconds since the previous call
+##
+func TargetPlayer(elapsedTime):
+	# set the player as target for the navigation agent
+	g_NavAgent.target_position = g_Target.global_position
+
+	# get the bot next position
+	var nextPos = g_NavAgent.get_next_path_position()
+
+	# calculate the move direction
+	var direction = (nextPos - global_position).normalized()
+
+	# calculate the bot position and rotation
+	velocity   = velocity.lerp(direction * g_Speed, g_Accel * elapsedTime)
+	rotation.y = atan2(velocity.x, velocity.z)
+
+###
+# Moves the bot during the attack
+##
+func MoveDuringAttack():
+	# keep the bot facing the player while attacking
+	var direction = global_position - g_Target.global_position
+	rotation.y    = atan2(-direction.x, -direction.z)
+
+###
+# Calculates if the vectors are closer than a minimum distance
+#@param vec1 - first vetor to check
+#@param vec2 - second vetor to check against
+#@param minDist - minimum distance
+#@return true if vec1 is close to vec2, otherwise false
+##
+func IsCloseTo(vec1, vec2, minDist):
+	return vec2.distance_to(vec1) <= minDist
+
+###
+# Checks if the bot starts to attack the player
+#@returns true if the bot is attacking the player, otherwise false
+##
+func DoStartAttack():
+	# player already died?
+	if g_PlayerDied:
+		return false
+
+	# already attacking?
+	if g_Attacking:
+		return true
+
+	# check if close enough to attack the player
+	g_Attacking = IsCloseTo(global_position, g_Target.global_position, g_MinHitDistance)
+
+	return g_Attacking
 
 ###
 # Called when the node enters the scene tree for the first time
@@ -45,94 +132,61 @@ func _ready():
 #@param delta - elapsed time in seconds since the previous call
 ##
 func _physics_process(delta):
-	# is bot inactive?
-	if !g_IsActivated:
-		return
-
-	if g_Energy <= 0:
-		# player is dying
-		g_StateMachine._set_state(StateMachine.IEState.S_Die)
-
-		# apply the state machine
-		g_StateMachine.run()
-
-		return
-
 	# get current time
 	var curTime = Time.get_ticks_msec()
 
-	# player still alive and not hit?
-	if !g_PlayerDied && !g_IsHit:
-		# set the player as target for the navigation agent
-		g_NavAgent.target_position = g_Target.global_position
+	var moved = false
 
-		# not attacking?
-		if !g_Attacking:
-			# check if close enough to attack the player
-			g_Attacking = !g_PlayerDied && IsCloseTo(global_position, g_Target.global_position, g_MinDistance)
+	# switch the bot action to apply
+	match GetBotState():
+		EBotAction.PA_Paused:
+			return
 
-			# if attacking, restart the animation
-			if (g_Attacking):
-				g_Animations.active = false
-				g_Animations.active = true
+		EBotAction.PA_Idle:
+			g_StateMachine._set_state(StateMachine.IEState.S_Idle)
 
-				g_AttackingTimestamp = Time.get_ticks_msec()
+		EBotAction.PA_Walk:
+			# make the bot to walk toward the player
+			TargetPlayer(delta)
 
-		# still not attacking?
-		if !g_Attacking:
-			# get the bot next position
-			var nextPos = g_NavAgent.get_next_path_position()
+			moved = true
 
-			# calculate the move direction
-			var direction = (nextPos - global_position).normalized()
+			g_StateMachine._set_state(StateMachine.IEState.S_Walk)
 
-			# calculate the bot position and rotation
-			velocity   = velocity.lerp(direction * g_Speed, g_Accel * delta)
-			rotation.y = atan2(velocity.x, velocity.z)
-		else:
-			# keep the bot facing the player while attacking
-			var direction = global_position - g_Target.global_position
-			rotation.y    = atan2(-direction.x, -direction.z)
+		EBotAction.PA_Attack:
+			g_AttackingTimestamp = Time.get_ticks_msec()
 
-			# can hit the player?
+			MoveDuringAttack()
+
+			g_StateMachine._set_state(StateMachine.IEState.S_Attack)
+
+		EBotAction.PA_Attacking:
+			MoveDuringAttack()
+
+			# is the player still not hit and the bot attack animation reached the point where the player can be hit?
 			if !g_HitPerformed && curTime >= g_AttackingTimestamp + g_HitAllowedTime && curTime < g_AttackingTimestamp + g_HitMissedTime:
-				# if player is close enough to the bot, it will be hit
+				# if player is still close enough to the bot, it will be hit
 				if IsCloseTo(global_position, g_Target.global_position, g_MinHitDistance):
 					onHitPlayer.emit()
 					g_HitPerformed = true
 
-	# get bot state
-	var isIdle    = (velocity == Vector3.ZERO && !g_Attacking && !g_IsHit) || g_PlayerDied
-	var isWalking =  velocity != Vector3.ZERO && !g_Attacking && !g_IsHit
+		EBotAction.PA_Hit:
+			g_StateMachine._set_delayed_state(StateMachine.IEState.S_Hit, 0.3)
 
-	# change the animation state depending on the bot action
-	if isIdle:
-		g_StateMachine._set_state(StateMachine.IEState.S_Idle)
-	elif isWalking:
-		g_StateMachine._set_state(StateMachine.IEState.S_Walk)
-	elif g_Attacking:
-		g_StateMachine._set_state(StateMachine.IEState.S_Attack)
-	elif g_IsHit:
-		g_StateMachine._set_state(StateMachine.IEState.S_Hit)
+			g_IsHitting = true
 
-	# apply the state machine
-	g_StateMachine.run()
+		EBotAction.PA_Hitting:
+			g_IsHitting = true #REM
 
-	# no longer move and slide the bot if player died or if hit (otherwise for an unknown reason it will drift)
-	if g_PlayerDied || g_IsHit:
-		return
+		EBotAction.PA_Dead:
+			g_StateMachine._set_state(StateMachine.IEState.S_Die)
+
+		_:
+			g_StateMachine._set_state(StateMachine.IEState.S_Idle)
 
 	# apply the bot changes
-	move_and_slide()
-
-###
-# Calculates if the vectors are closer than a minimum distance
-#@param vec1 - first vetor to check
-#@param vec2 - second vetor to check against
-#@param minDist - minimum distance
-##
-func IsCloseTo(vec1, vec2, minDist):
-	return vec2.distance_to(vec1) <= minDist
+	if moved:
+		move_and_slide()
 
 ###
 # Called when character animation finished
@@ -141,15 +195,18 @@ func IsCloseTo(vec1, vec2, minDist):
 func _on_animation_tree_animation_finished(anim_name):
 	# was bot hit?
 	if anim_name == "Hit":
-		g_IsHit = false
+		g_IsHit        = false
+		g_IsHitting    = false
+		g_Attacking    = false
+		g_HitPerformed = false
 		return
 
-	# ignore all animation but the attack one
-	if anim_name != "Attack":
-		return
-
-	g_Attacking    = false
-	g_HitPerformed = false
+	# was bot attacking?
+	if anim_name == "Attack":
+		g_IsHit        = false
+		g_IsHitting    = false
+		g_Attacking    = false
+		g_HitPerformed = false
 
 ###
 # Called when the player enters in the laboratory
@@ -167,17 +224,15 @@ func _on_main_on_player_leaves_labo_room():
 # Called when the player hits the bot
 ##
 func _on_laure_on_player_hit_bot():
-	# set the state machine to hit
-	g_StateMachine._set_delayed_state(StateMachine.IEState.S_Hit, 0.3)
-
-	# apply the state machine
-	g_StateMachine.run()
+	if g_IsHit:
+		return
 
 	# remove 1 point of energy
 	if g_IsActivated && !g_IsHit:
 		g_Energy = g_Energy - 1
 
-	g_IsHit = true
+	g_IsHit     = true
+	g_IsHitting = false
 
 ###
 # Called when the player died

@@ -34,6 +34,7 @@ var g_Energy        = 5
 var g_DoorOpening      = false
 var g_IsFiring         = false
 var g_IsHit            = false
+var g_IsBotHit         = false
 var g_FireSoundPlayed  = false
 var g_HitSoundPlayed   = false
 var g_DyingSoundPlayed = false
@@ -244,12 +245,6 @@ func _physics_process(delta):
 			if !g_FireSound.is_playing():
 				g_FireSound.play();
 
-			# force the state machine to reset the animation by changing it before re-run the good
-			# one. Unfortunately calling advance() has no effect after the animation ends. Not a very
-			# good solution, but it works
-			g_StateMachine._set_state(StateMachine.IEState.S_Fire_Idle)
-			g_StateMachine.run()
-
 			g_StateMachine._set_state(StateMachine.IEState.S_Fire)
 
 		EPlayerAction.PA_Firing:
@@ -258,12 +253,13 @@ func _physics_process(delta):
 				g_Fire.visible = false
 
 			# is the gun ray hit something 
-			if g_GunRay.is_colliding():
+			if !g_IsBotHit && g_GunRay.is_colliding():
 				# get the collider
 				var gunCollider = g_GunRay.get_collider()
 
 				# hit the bot?
 				if gunCollider.name == "Zombie":
+					g_IsBotHit = true
 					onPlayerHitBot.emit()
 
 		EPlayerAction.PA_Hit:
@@ -291,9 +287,6 @@ func _physics_process(delta):
 
 			g_StateMachine._set_state(StateMachine.IEState.S_Idle)
 
-	# apply the state machine
-	g_StateMachine.run()
-
 	# apply the player changes
 	if moved:
 		move_and_slide()
@@ -317,16 +310,27 @@ func _on_environment_on_door_anim_finished():
 func _on_animation_tree_animation_finished(anim_name):
 	# player was hit
 	if anim_name == "hit":
+		# reset both fire and hit status
 		g_IsHit          = false
+		g_IsBotHit       = false
 		g_HitSoundPlayed = false
+		g_IsFiring 		 = false
 		return
 
-	# ignore all animation but the fire one
-	if anim_name != "fire":
+	# player aiming
+	if anim_name == "fire_idle":
+		# reset fire status
+		g_IsFiring = false
+		g_IsBotHit = false
 		return
 
-	# reset fire status
-	g_IsFiring = false
+	# player fired
+	if anim_name == "fire":
+		# reset both fire and hit status
+		g_IsHit          = false
+		g_IsBotHit       = false
+		g_HitSoundPlayed = false
+		g_IsFiring       = false
 
 ###
 # Called when the bot hits the player
