@@ -10,6 +10,7 @@ enum EBotAction {PA_Idle, PA_Walk, PA_Attack, PA_Attacking, PA_Hit, PA_Hitting, 
 @onready var g_Animations  = $AnimationTree
 @onready var g_AnimPlayer  = $Pivot/Zombie/AnimationPlayer
 @onready var g_NavAgent    = $NavigationAgent
+@onready var g_Collider    = $Collider
 @onready var g_Target      = $"../Laure"
 @onready var g_WalkSound   = $Sounds/Walk
 @onready var g_MoanSound   = $Sounds/Moan
@@ -259,9 +260,14 @@ func _physics_process(delta):
 			g_IsHitting = true #REM
 
 		EBotAction.PA_Dead:
+			# already dying?
 			if !g_IsDying:
 				StopSounds()
 				PlayDieSound()
+
+				# disable the collider, the bot will no longer use it and it may hinder the player
+				g_Collider.set_deferred("disabled", true)
+
 				g_IsDying = true
 
 			g_StateMachine._set_state(StateMachine.IEState.S_Die)
