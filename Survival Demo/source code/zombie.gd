@@ -7,10 +7,15 @@ const StateMachine = preload("res://source code/state_machine.gd")
 enum EBotAction {PA_Idle, PA_Walk, PA_Attack, PA_Attacking, PA_Hit, PA_Hitting, PA_Dead, PA_Paused}
 
 # components
-@onready var g_Animations = $AnimationTree
-@onready var g_AnimPlayer = $Pivot/Zombie/AnimationPlayer
-@onready var g_NavAgent   = $NavigationAgent
-@onready var g_Target     = $"../Laure"
+@onready var g_Animations  = $AnimationTree
+@onready var g_AnimPlayer  = $Pivot/Zombie/AnimationPlayer
+@onready var g_NavAgent    = $NavigationAgent
+@onready var g_Target      = $"../Laure"
+@onready var g_WalkSound   = $Sounds/Walk
+@onready var g_MoanSound   = $Sounds/Moan
+@onready var g_AttackSound = $Sounds/Attack
+@onready var g_HitSound    = $Sounds/Hit
+@onready var g_DieSound    = $Sounds/Die
 
 # game objects
 var g_StateMachine = null
@@ -34,6 +39,7 @@ var g_HitPerformed = false
 var g_IsHit        = false
 var g_IsHitting    = false
 var g_PlayerDied   = false
+var g_IsDying      = false
 
 # Emitted when the bot hits the player
 signal onHitPlayer
@@ -122,6 +128,70 @@ func DoStartAttack():
 	return g_Attacking
 
 ###
+# Plays the walk sound
+##
+func PlayWalkSound():
+	# play the walking sound
+	if !g_WalkSound.is_playing():
+		g_WalkSound.play();
+
+###
+# Plays the moan sound
+##
+func PlayMoanSound():
+	# play the moan sound
+	if !g_MoanSound.is_playing():
+		g_MoanSound.play();
+
+###
+# Plays the attack sound
+##
+func PlayAttackSound():
+	# play the attack sound
+	if !g_AttackSound.is_playing():
+		g_AttackSound.play();
+
+###
+# Plays the hit sound
+##
+func PlayHitSound():
+	# play the hit sound
+	if !g_HitSound.is_playing():
+		g_HitSound.play();
+
+###
+# Plays the die sound
+##
+func PlayDieSound():
+	# play the die sound
+	if !g_DieSound.is_playing():
+		g_DieSound.play();
+
+###
+# Stops all the sounds
+##
+func StopSounds():
+	# stop the walk sound
+	if g_WalkSound.is_playing():
+		g_WalkSound.stop();
+
+	# stop the moan sound
+	if g_MoanSound.is_playing():
+		g_MoanSound.stop();
+
+	# stop the attack sound
+	if g_AttackSound.is_playing():
+		g_AttackSound.stop();
+
+	# stop the hit sound
+	if g_HitSound.is_playing():
+		g_HitSound.stop();
+
+	# stop the die sound
+	if g_DieSound.is_playing():
+		g_DieSound.stop();
+
+###
 # Called when the node enters the scene tree for the first time
 ##
 func _ready():
@@ -143,11 +213,15 @@ func _physics_process(delta):
 			return
 
 		EBotAction.PA_Idle:
+			StopSounds()
+
 			g_StateMachine._set_state(StateMachine.IEState.S_Idle)
 
 		EBotAction.PA_Walk:
 			# make the bot to walk toward the player
 			TargetPlayer(delta)
+
+			PlayWalkSound()
 
 			moved = true
 
@@ -157,6 +231,9 @@ func _physics_process(delta):
 			g_AttackingTimestamp = Time.get_ticks_msec()
 
 			MoveDuringAttack()
+
+			StopSounds()
+			PlayAttackSound()
 
 			g_StateMachine._set_state(StateMachine.IEState.S_Attack)
 
@@ -171,6 +248,9 @@ func _physics_process(delta):
 					g_HitPerformed = true
 
 		EBotAction.PA_Hit:
+			StopSounds()
+			PlayHitSound()
+
 			g_StateMachine._set_delayed_state(StateMachine.IEState.S_Hit, 0.3)
 
 			g_IsHitting = true
@@ -179,9 +259,16 @@ func _physics_process(delta):
 			g_IsHitting = true #REM
 
 		EBotAction.PA_Dead:
+			if !g_IsDying:
+				StopSounds()
+				PlayDieSound()
+				g_IsDying = true
+
 			g_StateMachine._set_state(StateMachine.IEState.S_Die)
 
 		_:
+			StopSounds()
+
 			g_StateMachine._set_state(StateMachine.IEState.S_Idle)
 
 	# apply the bot changes
@@ -212,12 +299,16 @@ func _on_animation_tree_animation_finished(anim_name):
 # Called when the player enters in the laboratory
 ##
 func _on_main_on_player_enters_labo_room():
+	PlayMoanSound()
+
 	g_IsActivated = true
 
 ###
 # Called when the player leaves the laboratory
 ##
 func _on_main_on_player_leaves_labo_room():
+	StopSounds()
+
 	g_IsActivated = false
 
 ###
