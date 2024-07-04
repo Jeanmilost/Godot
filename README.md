@@ -17,4 +17,4 @@ Below are several useful shortcuts to navigate in the editor:
 
 ### Remove the read-only limitation on importing assets
 Whan a model or a scene is imported from a glTF asset, it is added as a read-only asset in the scene. To allow this asset to be modified from within Godot, right-click it in the scene hierarchy and select the *Make Local* option.
-![MAke local menu item](Screenshots/Godot Make Local.png)
+![Make local menu item](Screenshots/GodotMakeLocal.png)
