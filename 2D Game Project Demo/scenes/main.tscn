@@ -1,0 +1,47 @@
+[gd_scene load_steps=6 format=3 uid="uid://c11c1a3b1sb2o"]
+
+[ext_resource type="Texture2D" uid="uid://bpg2hxpifapya" path="res://assets/images/Voitures.png" id="1_lkbk5"]
+[ext_resource type="PackedScene" uid="uid://cfvr7kk2ktkst" path="res://scenes/player.tscn" id="2_kfjug"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3ll8h"]
+size = Vector2(2800, 101)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8k6ap"]
+size = Vector2(455, 1462)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jh2r8"]
+size = Vector2(455, 1462)
+
+[node name="Node2D" type="Node2D"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(1413, 962)
+texture = ExtResource("1_lkbk5")
+
+[node name="Player" parent="." instance=ExtResource("2_kfjug")]
+position = Vector2(590, 1650)
+scale = Vector2(0.25, 0.25)
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(1444, 1872)
+
+[node name="Collider" type="CollisionShape2D" parent="Ground"]
+position = Vector2(-31, 0)
+shape = SubResource("RectangleShape2D_3ll8h")
+
+[node name="Left_Edge" type="StaticBody2D" parent="."]
+position = Vector2(4, 1678)
+
+[node name="Collider" type="CollisionShape2D" parent="Left_Edge"]
+position = Vector2(237, -588)
+shape = SubResource("RectangleShape2D_8k6ap")
+
+[node name="Right_Edge" type="StaticBody2D" parent="."]
+
+[node name="Collider" type="CollisionShape2D" parent="Right_Edge"]
+position = Vector2(2586, 1090)
+shape = SubResource("RectangleShape2D_jh2r8")
