@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://blhj84fmg4t5i"]
+
+[ext_resource type="PackedScene" uid="uid://cy7651j0r4f16" path="res://scenes/coast.tscn" id="2_gu10x"]
+[ext_resource type="PackedScene" uid="uid://c7ssnn11vjapm" path="res://scenes/tree.tscn" id="3_sh72p"]
+[ext_resource type="PackedScene" uid="uid://b325h6q3flp3g" path="res://scenes/water.tscn" id="4_qu311"]
+
+[node name="Beach" type="Node3D"]
+
+[node name="Water" parent="." instance=ExtResource("4_qu311")]
+transform = Transform3D(1000, 0, 0, 0, 5, 0, 0, 0, 1000, 0, -2.25, 0)
+
+[node name="Coast" parent="." instance=ExtResource("2_gu10x")]
+
+[node name="Tree" parent="." instance=ExtResource("3_sh72p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.10548, 0)

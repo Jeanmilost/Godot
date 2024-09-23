@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cy7651j0r4f16"]
+
+[ext_resource type="PackedScene" uid="uid://ccbtprph5jr7f" path="res://assets/models/beach/beach.glb" id="1_84rkx"]
+
+[node name="Coast" type="Node3D"]
+
+[node name="Model" parent="." instance=ExtResource("1_84rkx")]
