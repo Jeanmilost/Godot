@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://c6p1ilftpunbu"]
+
+[ext_resource type="PackedScene" uid="uid://dex3bmmmg8aif" path="res://scenes/mountains.tscn" id="1_wyvb4"]
+
+[node name="Main" type="Node3D"]
+
+[node name="Mountains" parent="." instance=ExtResource("1_wyvb4")]
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)

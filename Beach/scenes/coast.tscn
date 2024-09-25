@@ -1,7 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://cy7651j0r4f16"]
+[gd_scene load_steps=3 format=3 uid="uid://cy7651j0r4f16"]
 
 [ext_resource type="PackedScene" uid="uid://ccbtprph5jr7f" path="res://assets/models/beach/beach.glb" id="1_84rkx"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_jewlw"]
+points = PackedVector3Array(17.6937, -0.526815, -6.65815, 17.6937, -1.31228, -6.65815, 1.19893, 0.258264, 34.1675, 9.83595, 2.6135, -12.9394, 6.69563, 2.6135, 31.0244, -29.4157, -1.31228, -2.73299, 1.19893, -1.31228, 33.3805, -28.6271, 1.04257, -7.44515, -23.9144, -0.526815, -16.0825, 16.9005, -1.31228, -13.7264, 8.26349, -0.526815, 33.3805, -1.15746, 2.6135, 12.9677, -5.0817, 1.82765, -16.0825, 15.3373, 1.04257, -15.2955, -27.0593, 0.258264, -0.376907, 4.33925, 2.6135, 30.2374, 16.9005, -0.526815, -16.0825, -27.0593, 1.04257, -12.9394, 16.1166, 1.04257, -6.65815, -29.4157, -1.31228, -6.65815, 2.76678, 2.6135, -6.65815, 11.4084, 2.6135, -2.73299, 9.83595, 0.258264, 27.8862, 11.4084, -1.31228, 15.3237, -22.3465, 1.04257, -16.0825, 10.6199, 1.82765, -16.0825, -29.4157, -0.526815, -11.3654, -9.00133, 1.82765, -15.2955, -0.373531, 0.258264, 32.5886, 0.415006, -1.31228, 33.3805, 16.1166, -0.526815, 1.97917, 13.7648, 1.82765, -14.5085)
 
 [node name="Coast" type="Node3D"]
 
 [node name="Model" parent="." instance=ExtResource("1_84rkx")]
+
+[node name="StaticBody" type="StaticBody3D" parent="Model"]
+
+[node name="Collider" type="CollisionShape3D" parent="Model/StaticBody"]
+shape = SubResource("ConvexPolygonShape3D_jewlw")

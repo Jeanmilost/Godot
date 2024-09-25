@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://c6p1ilftpunbu"]
+[gd_scene load_steps=3 format=3 uid="uid://c6p1ilftpunbu"]
 
 [ext_resource type="PackedScene" uid="uid://blhj84fmg4t5i" path="res://scenes/beach.tscn" id="1_2v47p"]
+[ext_resource type="PackedScene" uid="uid://cp8bhgu043xl0" path="res://scenes/player.tscn" id="2_nkq7k"]
 
 [node name="Main" type="Node3D"]
 
@@ -8,3 +9,6 @@
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-1, 2.11495e-08, -8.48259e-08, 0, 0.970296, 0.241922, 8.74228e-08, 0.241922, -0.970296, 0, 8, -20)
+
+[node name="Player" parent="." instance=ExtResource("2_nkq7k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -12)

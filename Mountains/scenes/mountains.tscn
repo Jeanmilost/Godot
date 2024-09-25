@@ -1,0 +1,28 @@
+[gd_scene load_steps=7 format=3 uid="uid://dex3bmmmg8aif"]
+
+[ext_resource type="Shader" path="res://shaders/mountains.gdshader" id="1_tvy8g"]
+[ext_resource type="Texture2D" uid="uid://ypucb8blxc0w" path="res://assets/models/mountains/heightmap.png" id="2_mkxun"]
+[ext_resource type="Texture2D" uid="uid://b1b6suor3klkn" path="res://assets/models/mountains/mountain.jpg" id="3_vp320"]
+[ext_resource type="Texture2D" uid="uid://w24ujrtk1c73" path="res://assets/models/mountains/sand.jpg" id="4_0do5y"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a4eiw"]
+render_priority = 0
+shader = ExtResource("1_tvy8g")
+shader_parameter/aerial_perspective_color = null
+shader_parameter/mountain_uv_scale = Vector2(1, 1)
+shader_parameter/sand_uv_scale = Vector2(25, 25)
+shader_parameter/height = 1.0
+shader_parameter/mountain_distance = 2000.0
+shader_parameter/mountain_texture = ExtResource("3_vp320")
+shader_parameter/sand_texture = ExtResource("4_0do5y")
+shader_parameter/height_map = ExtResource("2_mkxun")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_hsy06"]
+material = SubResource("ShaderMaterial_a4eiw")
+subdivide_width = 20
+subdivide_depth = 20
+
+[node name="Mountains" type="Node3D"]
+
+[node name="Terrain" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_hsy06")
