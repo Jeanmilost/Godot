@@ -1,14 +1,57 @@
-[gd_scene load_steps=3 format=3 uid="uid://c6p1ilftpunbu"]
+[gd_scene load_steps=6 format=3 uid="uid://c6p1ilftpunbu"]
 
 [ext_resource type="PackedScene" uid="uid://blhj84fmg4t5i" path="res://scenes/beach.tscn" id="1_2v47p"]
 [ext_resource type="PackedScene" uid="uid://cp8bhgu043xl0" path="res://scenes/player.tscn" id="2_nkq7k"]
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kt6xk"]
+
+[sub_resource type="Sky" id="Sky_3csqe"]
+sky_material = SubResource("ProceduralSkyMaterial_kt6xk")
+
+[sub_resource type="Environment" id="Environment_hh8ku"]
+sky = SubResource("Sky_3csqe")
+ambient_light_source = 3
+ambient_light_color = Color(0.643137, 0.643137, 0.643137, 1)
+reflected_light_source = 2
+tonemap_mode = 2
+ssr_fade_in = 0.3
+ssr_fade_out = 0.784584
+ssr_depth_tolerance = 0.01
+ssao_radius = 10.84
+ssao_intensity = 8.94
+ssao_power = 0.388224
+ssao_detail = 2.53
+ssao_horizon = 0.03
+glow_enabled = true
+glow_intensity = 1.3
+glow_strength = 0.48
+glow_bloom = 0.57
+glow_hdr_threshold = 1.03
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.004
+volumetric_fog_albedo = Color(0.309804, 0.776471, 0.937255, 1)
+volumetric_fog_emission = Color(0.156863, 0.435294, 0.745098, 1)
+volumetric_fog_emission_energy = 2.5
+adjustment_enabled = true
+adjustment_saturation = 1.11
+
 [node name="Main" type="Node3D"]
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.345441, 0.361484, 0, 0.722967, 0.690882, -0.5, 0.598322, -0.626108, 0, 0, 0)
+light_color = Color(0.917647, 0.917647, 0.917647, 1)
+light_energy = 2.0
+light_bake_mode = 1
+shadow_enabled = true
+shadow_opacity = 0.95
+shadow_blur = 0.5
+directional_shadow_pancake_size = 74.9
 
 [node name="Beach" parent="." instance=ExtResource("1_2v47p")]
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-1, 2.11495e-08, -8.48259e-08, 0, 0.970296, 0.241922, 8.74228e-08, 0.241922, -0.970296, 0, 8, -20)
+environment = SubResource("Environment_hh8ku")
 
 [node name="Player" parent="." instance=ExtResource("2_nkq7k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -12)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.52, -12)
