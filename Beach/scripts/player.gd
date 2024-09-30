@@ -4,6 +4,8 @@ extends CharacterBody3D
 const g_WalkingSpeed  = 1.5
 const g_RotationSpeed = 4
 
+@onready var g_WalkSound = $Sounds/AudioStreamPlayer3D
+
 ###
 # Called every frame at a fixed rate, which allows any processing that requires the physics values
 #@param delta - elapsed time in seconds since the previous call
@@ -21,9 +23,17 @@ func _physics_process(delta):
 
 		velocity.x = direction.x * g_WalkingSpeed
 		velocity.z = direction.z * g_WalkingSpeed
+
+		# play walk sound, if still not playing
+		if !g_WalkSound.playing:
+			g_WalkSound.play()
 	else:
 		velocity.x = move_toward(velocity.x, 0.0, g_WalkingSpeed)
 		velocity.z = move_toward(velocity.z, 0.0, g_WalkingSpeed)
+
+		# stop walk sound, if still playing
+		if g_WalkSound.playing:
+			g_WalkSound.stop()
 
 	# change the animation state depending on the user action
 	$AnimationTree.set("parameters/conditions/isIdle",    velocity == Vector3.ZERO)
