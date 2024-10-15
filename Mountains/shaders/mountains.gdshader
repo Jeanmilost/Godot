@@ -1,7 +1,5 @@
 /**
 * Heightmap based mountains shader
-*@note Based on https://docs.godotengine.org/en/2.1/community/tutorials/3d/mesh_generation_with_heightmap_and_shaders.html
-*      and https://godotshaders.com/shader/mountain-background-shader/
 *@author Jean-Milost Reymond
 */
 shader_type spatial;
@@ -15,16 +13,16 @@ uniform sampler2D height_map;
 uniform vec4      aerial_perspective_color;
 uniform vec2      mountain_uv_scale = vec2( 25.0, 25.0 );
 uniform vec2      sand_uv_scale     = vec2( 100.0, 100.0 );
-uniform float     height            = 11.0;
-uniform float     mountain_distance = 2000.0;
+uniform float     height            = 1.0;
+//REM uniform float     mountain_distance = 2000.0;
 
 /**
 * Vertex shader main function
 */
 void vertex()
 {
-	float r  = atan(VERTEX.z, VERTEX.x);
-	VERTEX.y = texture(height_map, UV).r * height * length(UV - vec2(0.5, 0.5));
+	//REM float r  = atan(VERTEX.z, VERTEX.x);
+	VERTEX.y = texture(height_map, UV).r * height;// * length(UV - vec2(0.5, 0.5));
 	NORMAL   = vec3(0.0, 1.0, 0.0);
 }
 
@@ -46,5 +44,6 @@ void fragment()
 		aerial_perspective_color.rgb,
 		dist * 0.8
 	);
+
 	DEPTH = clamp( 0.99999 + dist * 0.00001, 0.0, 1.0 );
 }

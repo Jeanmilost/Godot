@@ -1,28 +1,37 @@
-[gd_scene load_steps=7 format=3 uid="uid://dex3bmmmg8aif"]
+[gd_scene load_steps=9 format=3 uid="uid://hrg4eh6m0338"]
 
-[ext_resource type="Shader" path="res://shaders/mountains.gdshader" id="1_tvy8g"]
-[ext_resource type="Texture2D" uid="uid://ypucb8blxc0w" path="res://assets/models/mountains/heightmap.png" id="2_mkxun"]
-[ext_resource type="Texture2D" uid="uid://b1b6suor3klkn" path="res://assets/models/mountains/mountain.jpg" id="3_vp320"]
-[ext_resource type="Texture2D" uid="uid://w24ujrtk1c73" path="res://assets/models/mountains/sand.jpg" id="4_0do5y"]
+[ext_resource type="Shader" path="res://shaders/mountains.gdshader" id="2_255h3"]
+[ext_resource type="Texture2D" uid="uid://c2o1doxtp6rgt" path="res://assets/models/mountains/heightmap.exr" id="2_gme2c"]
+[ext_resource type="Texture2D" uid="uid://b1b6suor3klkn" path="res://assets/models/mountains/mountain.jpg" id="4_v7uup"]
+[ext_resource type="Texture2D" uid="uid://w24ujrtk1c73" path="res://assets/models/mountains/sand.jpg" id="5_bjg05"]
+[ext_resource type="Script" path="res://scripts/terrain_collider.gd" id="6_f1glw"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_a4eiw"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n3xet"]
 render_priority = 0
-shader = ExtResource("1_tvy8g")
+shader = ExtResource("2_255h3")
 shader_parameter/aerial_perspective_color = null
 shader_parameter/mountain_uv_scale = Vector2(1, 1)
-shader_parameter/sand_uv_scale = Vector2(25, 25)
-shader_parameter/height = 1.0
-shader_parameter/mountain_distance = 2000.0
-shader_parameter/mountain_texture = ExtResource("3_vp320")
-shader_parameter/sand_texture = ExtResource("4_0do5y")
-shader_parameter/height_map = ExtResource("2_mkxun")
+shader_parameter/sand_uv_scale = Vector2(1, 1)
+shader_parameter/height = 0.5
+shader_parameter/mountain_texture = ExtResource("4_v7uup")
+shader_parameter/sand_texture = ExtResource("5_bjg05")
+shader_parameter/height_map = ExtResource("2_gme2c")
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_hsy06"]
-material = SubResource("ShaderMaterial_a4eiw")
-subdivide_width = 20
-subdivide_depth = 20
+[sub_resource type="PlaneMesh" id="PlaneMesh_y1j0q"]
+material = SubResource("ShaderMaterial_n3xet")
+subdivide_width = 80
+subdivide_depth = 80
+
+[sub_resource type="HeightMapShape3D" id="HeightMapShape3D_ubwqr"]
 
 [node name="Mountains" type="Node3D"]
 
 [node name="Terrain" type="MeshInstance3D" parent="."]
-mesh = SubResource("PlaneMesh_hsy06")
+mesh = SubResource("PlaneMesh_y1j0q")
+script = ExtResource("6_f1glw")
+
+[node name="StaticBody" type="StaticBody3D" parent="Terrain"]
+input_ray_pickable = false
+
+[node name="Collider" type="CollisionShape3D" parent="Terrain/StaticBody"]
+shape = SubResource("HeightMapShape3D_ubwqr")

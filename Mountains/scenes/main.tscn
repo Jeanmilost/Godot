@@ -1,8 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://c6p1ilftpunbu"]
+[gd_scene load_steps=3 format=3 uid="uid://c6p1ilftpunbu"]
 
-[ext_resource type="PackedScene" uid="uid://dex3bmmmg8aif" path="res://scenes/mountains.tscn" id="1_wyvb4"]
+[ext_resource type="PackedScene" uid="uid://bdlfjognpa07w" path="res://scenes/player.tscn" id="2_cnv08"]
+[ext_resource type="PackedScene" uid="uid://hrg4eh6m0338" path="res://scenes/mountains.tscn" id="2_wveic"]
 
 [node name="Main" type="Node3D"]
 
-[node name="Mountains" parent="." instance=ExtResource("1_wyvb4")]
+[node name="Mountains" parent="." instance=ExtResource("2_wveic")]
 transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
+
+[node name="Player" parent="." instance=ExtResource("2_cnv08")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.2525, 26.9559, 0)
