@@ -14,16 +14,13 @@ uniform vec4      aerial_perspective_color;
 uniform vec2      mountain_uv_scale = vec2( 25.0, 25.0 );
 uniform vec2      sand_uv_scale     = vec2( 100.0, 100.0 );
 uniform float     height            = 1.0;
-//REM uniform float     mountain_distance = 2000.0;
 
 /**
 * Vertex shader main function
 */
 void vertex()
 {
-	//REM float r  = atan(VERTEX.z, VERTEX.x);
-	VERTEX.y = texture(height_map, UV).r * height;// * length(UV - vec2(0.5, 0.5));
-	NORMAL   = vec3(0.0, 1.0, 0.0);
+	VERTEX.y = texture(height_map, UV).r * height;
 }
 
 /**
@@ -44,6 +41,4 @@ void fragment()
 		aerial_perspective_color.rgb,
 		dist * 0.8
 	);
-
-	DEPTH = clamp( 0.99999 + dist * 0.00001, 0.0, 1.0 );
 }

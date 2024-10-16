@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://c6p1ilftpunbu"]
+[gd_scene load_steps=4 format=3 uid="uid://c6p1ilftpunbu"]
 
 [ext_resource type="PackedScene" uid="uid://bdlfjognpa07w" path="res://scenes/player.tscn" id="2_cnv08"]
 [ext_resource type="PackedScene" uid="uid://hrg4eh6m0338" path="res://scenes/mountains.tscn" id="2_wveic"]
+[ext_resource type="AudioStream" uid="uid://b0dp4lggfq3gs" path="res://assets/sounds/mountain_wind.mp3" id="3_2okxb"]
 
 [node name="Main" type="Node3D"]
 
@@ -10,3 +11,10 @@ transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
 
 [node name="Player" parent="." instance=ExtResource("2_cnv08")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.2525, 26.9559, 0)
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="Mountain_Wind" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("3_2okxb")
+volume_db = -9.5
+autoplay = true

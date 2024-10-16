@@ -1,10 +1,28 @@
-[gd_scene load_steps=4 format=3 uid="uid://bdlfjognpa07w"]
+[gd_scene load_steps=8 format=3 uid="uid://bdlfjognpa07w"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_5ebm2"]
+[ext_resource type="Texture2D" uid="uid://cjcxqbjq6jj8o" path="res://assets/textures/sky/overcast_soil_puresky_4k.exr" id="2_fryyu"]
 [ext_resource type="AudioStream" uid="uid://o0gkhhbj3oxo" path="res://assets/sounds/snow_footsteps.mp3" id="2_krfue"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hvidq"]
 radius = 0.25
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_gndc1"]
+panorama = ExtResource("2_fryyu")
+
+[sub_resource type="Sky" id="Sky_3upmx"]
+sky_material = SubResource("PanoramaSkyMaterial_gndc1")
+
+[sub_resource type="Environment" id="Environment_xbwhi"]
+background_mode = 2
+sky = SubResource("Sky_3upmx")
+volumetric_fog_enabled = true
+volumetric_fog_albedo = Color(0.898039, 0.898039, 0.898039, 1)
+volumetric_fog_emission = Color(0.376471, 0.376471, 0.376471, 1)
+volumetric_fog_emission_energy = 5.0
+volumetric_fog_detail_spread = 0.517632
+volumetric_fog_ambient_inject = 0.02
+volumetric_fog_sky_affect = 0.0
 
 [node name="Player" type="CharacterBody3D"]
 input_ray_pickable = false
@@ -19,6 +37,7 @@ shape = SubResource("CapsuleShape3D_hvidq")
 
 [node name="Camera" type="Camera3D" parent="Pivot"]
 transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 0.875, 0)
+environment = SubResource("Environment_xbwhi")
 
 [node name="Sounds" type="Node" parent="."]
 
