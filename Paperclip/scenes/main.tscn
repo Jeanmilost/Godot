@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://d0xggmp26drbt"]
+[gd_scene load_steps=9 format=3 uid="uid://d0xggmp26drbt"]
 
 [ext_resource type="PackedScene" uid="uid://chufvnefa3we2" path="res://scenes/paperclip.tscn" id="1_inbsc"]
 [ext_resource type="Shader" path="res://shaders/Volumetric3DFog.gdshader" id="2_y10kc"]
+[ext_resource type="PackedScene" uid="uid://bmro801r3ryct" path="res://assets/models/desktop/scene.gltf" id="3_o8704"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fua35"]
 shader = ExtResource("2_y10kc")
@@ -63,3 +64,9 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 
 
 [node name="Ground" type="MeshInstance3D" parent="."]
 mesh = SubResource("PlaneMesh_7nclw")
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("3_o8704")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.887126, 0, 0.819)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Sketchfab_Scene"]
+transform = Transform3D(2, 0, 0, 0, -1.91754, 0.568365, 0, -0.568365, -1.91754, 0, 1.76117, -2.2933)
