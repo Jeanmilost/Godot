@@ -1,0 +1,11 @@
+Model Information:
+* title:	Office Chair
+* source:	https://sketchfab.com/3d-models/office-chair-5cd859cd7b9a430db0195af2ba89949b
+* author:	crow (https://sketchfab.com/crow.bite)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Office Chair" (https://sketchfab.com/3d-models/office-chair-5cd859cd7b9a430db0195af2ba89949b) by crow (https://sketchfab.com/crow.bite) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
