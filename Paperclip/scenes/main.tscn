@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://d0xggmp26drbt"]
+[gd_scene load_steps=14 format=3 uid="uid://d0xggmp26drbt"]
 
 [ext_resource type="PackedScene" uid="uid://chufvnefa3we2" path="res://scenes/paperclip.tscn" id="1_inbsc"]
 [ext_resource type="Shader" path="res://shaders/Volumetric3DFog.gdshader" id="2_y10kc"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://wl64fkhxr0xn" path="res://assets/models/library/scene.gltf" id="4_fhqr5"]
 [ext_resource type="PackedScene" uid="uid://n7i31cu0d11y" path="res://assets/models/old computer/scene.gltf" id="5_duoy4"]
 [ext_resource type="PackedScene" uid="uid://dohbpcj1v3lh4" path="res://assets/models/office chair/scene.gltf" id="6_7koct"]
+[ext_resource type="PackedScene" uid="uid://bgo5h6crn7782" path="res://scenes/player.tscn" id="7_p2g57"]
+[ext_resource type="PackedScene" uid="uid://chmri1mtdboup" path="res://assets/models/book stack/scene.gltf" id="8_ig2cu"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fua35"]
 shader = ExtResource("2_y10kc")
@@ -72,17 +74,23 @@ mesh = SubResource("PlaneMesh_7nclw")
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.887126, 0, 0.819)
 
 [node name="SpotLight" type="SpotLight3D" parent="Desktop"]
-transform = Transform3D(2, 0, 0, 0, -1.91754, 0.568365, 0, -0.568365, -1.91754, 0, 1.76117, -2.2933)
+transform = Transform3D(1, 0, 0, 0, -0.95877, 0.284183, 0, -0.284183, -0.95877, 0, 1.76117, -2.2933)
 
 [node name="Library" parent="." instance=ExtResource("4_fhqr5")]
 transform = Transform3D(0.445023, 0, 0.227936, 0, 0.5, 0, -0.227936, 0, 0.445023, 0.782368, 0, -0.808044)
 
 [node name="SpotLight" type="SpotLight3D" parent="Library"]
-transform = Transform3D(2, 0, 0, 0, 1.93595, 0.502078, 0, -0.502078, 1.93595, 0, 1.86637, 2.25774)
+transform = Transform3D(1, 0, 0, 0, 0.967977, 0.251039, 0, -0.251039, 0.967977, 0, 1.86637, 2.25774)
 light_energy = 3.286
 
-[node name="Sketchfab_Scene" parent="." instance=ExtResource("5_duoy4")]
+[node name="Old Computer" parent="." instance=ExtResource("5_duoy4")]
 transform = Transform3D(-0.221173, 0, 0.202689, 0, 0.3, 0, -0.202689, 0, -0.221173, 0.692479, 0.379, 0.804812)
 
-[node name="Sketchfab_Scene2" parent="." instance=ExtResource("6_7koct")]
-transform = Transform3D(-0.244611, 0, -0.316489, 0, 0.4, 0, 0.316489, 0, -0.244611, 0.83109, 0, 1.06281)
+[node name="Chair" parent="." instance=ExtResource("6_7koct")]
+transform = Transform3D(-0.0561684, 0, -0.496835, 0, 0.5, 0, 0.496835, 0, -0.0561684, 1.12853, 0, 1.09711)
+
+[node name="Player" parent="." instance=ExtResource("7_p2g57")]
+transform = Transform3D(-0.0596824, 0, 0.00616546, 0, 0.06, 0, -0.00616546, 0, -0.0596824, 0.927968, 0, 1.2308)
+
+[node name="Book Stack" parent="." instance=ExtResource("8_ig2cu")]
+transform = Transform3D(0.0295722, 0, -0.0634467, 0, 0.07, 0, 0.0634467, 0, 0.0295722, 1.13661, 0.421663, 0.856153)
