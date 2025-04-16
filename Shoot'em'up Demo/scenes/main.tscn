@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://doan6fo577rk4"]
+
+[ext_resource type="PackedScene" uid="uid://cnmdq3bwax2d4" path="res://scenes/ocean.tscn" id="2_rcnpr"]
+[ext_resource type="PackedScene" uid="uid://ba17x63ox3pf2" path="res://scenes/player.tscn" id="5_t2sfl"]
+
+[node name="Main" type="Node3D"]
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 10, 0)
+size = 0.1
+
+[node name="Player" parent="Camera" instance=ExtResource("5_t2sfl")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, -40)
+
+[node name="Ocean" parent="." instance=ExtResource("2_rcnpr")]

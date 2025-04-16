@@ -1,0 +1,327 @@
+[gd_scene load_steps=27 format=3 uid="uid://cnmdq3bwax2d4"]
+
+[ext_resource type="Script" path="res://addons/boujie_water_shader/prefabs/ocean_prefab.gd" id="1_ujlod"]
+[ext_resource type="Material" uid="uid://cu46b100244nd" path="res://addons/boujie_water_shader/prefabs/deep_ocean_material.tres" id="2_ku4ig"]
+[ext_resource type="Script" path="res://addons/boujie_water_shader/types/water_material_designer.gd" id="3_sjwli"]
+[ext_resource type="Script" path="res://addons/boujie_water_shader/types/gerstner_wave.gd" id="4_bvjsy"]
+
+[sub_resource type="Resource" id="Resource_h6ky8"]
+script = ExtResource("4_bvjsy")
+steepness = 10.0
+amplitude = 2.0
+direction_degrees = 15.0
+frequency = 0.02
+speed = 1.0
+phase_degrees = 0.0
+
+[sub_resource type="Resource" id="Resource_gq4b8"]
+script = ExtResource("4_bvjsy")
+steepness = 0.05
+amplitude = 0.004
+direction_degrees = 70.702
+frequency = 2.0
+speed = 1.0
+phase_degrees = 0.0
+
+[sub_resource type="Resource" id="Resource_fmgms"]
+script = ExtResource("4_bvjsy")
+steepness = 2.0
+amplitude = 1.0
+direction_degrees = 150.0
+frequency = 0.06
+speed = 1.6
+phase_degrees = 0.0
+
+[sub_resource type="Resource" id="Resource_pr2ud"]
+script = ExtResource("4_bvjsy")
+steepness = 0.9
+amplitude = 0.7
+direction_degrees = 315.0
+frequency = 0.06
+speed = 3.0
+phase_degrees = 0.0
+
+[sub_resource type="Resource" id="Resource_ewn38"]
+script = ExtResource("4_bvjsy")
+steepness = 2.0
+amplitude = 1.5
+direction_degrees = 15.0
+frequency = 0.02
+speed = 1.0
+phase_degrees = -40.0
+
+[sub_resource type="Resource" id="Resource_v8fws"]
+script = ExtResource("4_bvjsy")
+steepness = 0.45
+amplitude = 0.7
+direction_degrees = 281.195
+frequency = 0.03
+speed = 3.0
+phase_degrees = 0.0
+
+[sub_resource type="Resource" id="Resource_pwrcy"]
+script = ExtResource("4_bvjsy")
+steepness = 1.3
+amplitude = 2.0
+direction_degrees = 88.25
+frequency = 0.001
+speed = 0.05
+phase_degrees = 0.0
+
+[sub_resource type="Resource" id="Resource_ei3rv"]
+script = ExtResource("4_bvjsy")
+steepness = 1.5
+amplitude = 1.0
+direction_degrees = 151.5
+frequency = 0.004
+speed = 0.05
+phase_degrees = 0.0
+
+[sub_resource type="Resource" id="Resource_8qnrv"]
+script = ExtResource("4_bvjsy")
+steepness = 0.7
+amplitude = 1.0
+direction_degrees = 25.0
+frequency = 0.005
+speed = 1.0
+phase_degrees = 0.0
+
+[sub_resource type="Resource" id="Resource_f3s47"]
+script = ExtResource("4_bvjsy")
+steepness = 0.45
+amplitude = 0.7
+direction_degrees = 315.0
+frequency = 0.06
+speed = 3.0
+phase_degrees = 0.0
+
+[sub_resource type="Resource" id="Resource_w7x3n"]
+script = ExtResource("4_bvjsy")
+steepness = 0.09
+amplitude = 0.7
+direction_degrees = 315.0
+frequency = 0.9
+speed = 0.75
+phase_degrees = 0.0
+
+[sub_resource type="Resource" id="Resource_v15ne"]
+script = ExtResource("4_bvjsy")
+steepness = 0.08
+amplitude = 0.5
+direction_degrees = 90.0
+frequency = 0.6
+speed = 0.375
+phase_degrees = 0.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ewwye"]
+subdivide_width = 16
+subdivide_depth = 16
+
+[sub_resource type="Shader" id="Shader_fa8gf"]
+code = "// NOTE: Shader automatically converted from Godot Engine 4.1.1.stable's StandardMaterial3D.
+// Drops distant fragments to keep the object in the opaque part of the render pipeline.
+
+shader_type spatial;
+render_mode blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx, world_vertex_coords;
+uniform vec4 albedo : source_color;
+uniform sampler2D texture_albedo : source_color,filter_linear_mipmap,repeat_enable;
+uniform float point_size : hint_range(0,128);
+uniform float roughness : hint_range(0,1);
+uniform sampler2D texture_metallic : hint_default_white,filter_linear_mipmap,repeat_enable;
+uniform vec4 metallic_texture_channel;
+uniform sampler2D texture_roughness : hint_roughness_r,filter_linear_mipmap,repeat_enable;
+uniform float specular;
+uniform float metallic;
+varying vec3 uv1_triplanar_pos;
+uniform float uv1_blend_sharpness;
+varying vec3 uv1_power_normal;
+uniform vec3 uv1_scale;
+uniform vec3 uv1_offset;
+uniform vec3 uv2_scale;
+uniform vec3 uv2_offset;
+
+uniform float drop_far;
+
+varying vec3 world_coordinates;
+
+void vertex() {
+	world_coordinates = VERTEX;
+	
+	TANGENT = vec3(0.0,0.0,-1.0) * abs(NORMAL.x);
+	TANGENT+= vec3(1.0,0.0,0.0) * abs(NORMAL.y);
+	TANGENT+= vec3(1.0,0.0,0.0) * abs(NORMAL.z);
+	TANGENT = normalize(TANGENT);
+	BINORMAL = vec3(0.0,1.0,0.0) * abs(NORMAL.x);
+	BINORMAL+= vec3(0.0,0.0,-1.0) * abs(NORMAL.y);
+	BINORMAL+= vec3(0.0,1.0,0.0) * abs(NORMAL.z);
+	BINORMAL = normalize(BINORMAL);
+	uv1_power_normal=pow(abs(mat3(MODEL_MATRIX) * NORMAL),vec3(uv1_blend_sharpness));
+	uv1_triplanar_pos = world_coordinates * uv1_scale + uv1_offset;
+	uv1_power_normal/=dot(uv1_power_normal,vec3(1.0));
+	uv1_triplanar_pos *= vec3(1.0,-1.0, 1.0);
+}
+
+
+
+
+vec4 triplanar_texture(sampler2D p_sampler,vec3 p_weights,vec3 p_triplanar_pos) {
+	vec4 samp=vec4(0.0);
+	samp+= texture(p_sampler,p_triplanar_pos.xy) * p_weights.z;
+	samp+= texture(p_sampler,p_triplanar_pos.xz) * p_weights.y;
+	samp+= texture(p_sampler,p_triplanar_pos.zy * vec2(-1.0,1.0)) * p_weights.x;
+	return samp;
+}
+
+
+void fragment() {
+	vec4 albedo_tex = triplanar_texture(texture_albedo,uv1_power_normal,uv1_triplanar_pos);
+	ALBEDO = albedo.rgb * albedo_tex.rgb;
+	float metallic_tex = dot(triplanar_texture(texture_metallic,uv1_power_normal,uv1_triplanar_pos),metallic_texture_channel);
+	METALLIC = metallic_tex * metallic;
+	vec4 roughness_texture_channel = vec4(1.0,0.0,0.0,0.0);
+	float roughness_tex = dot(triplanar_texture(texture_roughness,uv1_power_normal,uv1_triplanar_pos),roughness_texture_channel);
+	ROUGHNESS = roughness_tex * roughness;
+	SPECULAR = specular;
+	
+	float distance_from_camera = distance(world_coordinates, CAMERA_POSITION_WORLD);
+	
+	if (distance_from_camera > drop_far) {
+		discard;
+	}
+}
+"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_igmye"]
+load_path = "res://.godot/imported/Sand.png-85ed17ac5b6334e2f77e493ffa3f725e.s3tc.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0wqrp"]
+render_priority = 0
+shader = SubResource("Shader_fa8gf")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 1.0
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = 0.5
+shader_parameter/metallic = null
+shader_parameter/uv1_blend_sharpness = 1.0
+shader_parameter/uv1_scale = Vector3(0.1, 0.1, 0.1)
+shader_parameter/uv1_offset = null
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = null
+shader_parameter/drop_far = 2000.0
+shader_parameter/texture_albedo = SubResource("CompressedTexture2D_igmye")
+
+[sub_resource type="GDScript" id="GDScript_0qusm"]
+script/source = "@tool
+extends MeshInstance3D
+
+## A \"distance fade\" for the ocean floor that prevents the material from
+## becoming a transparent material.
+
+## Distance at which portions of the ocean floor will become invisible
+@export var drop_far := 2000.0:
+	set(value):
+		drop_far = value
+		_update_drop_params()
+
+
+func _update_drop_params():
+	var material = get_surface_override_material(0)
+	material.set_shader_parameter(\"drop_far\", drop_far)
+
+
+func _ready():
+	_update_drop_params()
+"
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3moa1"]
+sky_top_color = Color(0.0470588, 0.454902, 0.976471, 1)
+sky_horizon_color = Color(0.556863, 0.823529, 0.909804, 1)
+sky_curve = 0.251337
+ground_bottom_color = Color(0.188235, 0.517647, 0.92549, 1)
+ground_horizon_color = Color(0.513726, 0.85098, 1, 1)
+ground_curve = 0.0743257
+
+[sub_resource type="Sky" id="Sky_grlw4"]
+sky_material = SubResource("ProceduralSkyMaterial_3moa1")
+
+[sub_resource type="Environment" id="Environment_mh5lb"]
+background_mode = 2
+sky = SubResource("Sky_grlw4")
+ambient_light_source = 3
+ambient_light_color = Color(0.505882, 0.505882, 0.505882, 1)
+ambient_light_sky_contribution = 0.49
+reflected_light_source = 2
+tonemap_mode = 2
+fog_sun_scatter = 0.06
+fog_density = 0.0005
+fog_aerial_perspective = 1.0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0
+volumetric_fog_length = 500.39
+
+[sub_resource type="FogMaterial" id="FogMaterial_tygyu"]
+density = 0.3558
+albedo = Color(0.301961, 0.603922, 1, 1)
+height_falloff = 1e+06
+edge_fade = 0.926824
+
+[sub_resource type="GDScript" id="GDScript_i1c2g"]
+script/source = "extends FogVolume
+
+@export var visible_height_offset := 0.0
+
+
+func _process(_delta):
+	var camera = get_viewport().get_camera_3d()
+	if camera:
+		visible = camera.position.y < (position.y + visible_height_offset)
+"
+
+[node name="Ocean" type="Node3D"]
+
+[node name="Model" type="Node3D" parent="."]
+script = ExtResource("1_ujlod")
+material = ExtResource("2_ku4ig")
+levels_of_detail = 5
+unit_size = 2.0
+far_edge = 4000
+
+[node name="WaterMaterialDesigner" type="Node" parent="Model"]
+script = ExtResource("3_sjwli")
+material = ExtResource("2_ku4ig")
+update_on_ready = true
+update_when_camera_far_changes = true
+ocean_path = NodePath("..")
+distance_fade_far = 4000
+distance_fade_softness = 0.395
+wave_fade_far = 1440
+wave_fade_softness = 0.641
+height_waves = Array[ExtResource("4_bvjsy")]([SubResource("Resource_h6ky8"), SubResource("Resource_gq4b8"), SubResource("Resource_fmgms"), SubResource("Resource_pr2ud")])
+foam_waves = Array[ExtResource("4_bvjsy")]([SubResource("Resource_ewn38"), SubResource("Resource_v8fws"), SubResource("Resource_pwrcy"), SubResource("Resource_ei3rv"), SubResource("Resource_8qnrv"), SubResource("Resource_f3s47")])
+uv_waves = Array[ExtResource("4_bvjsy")]([SubResource("Resource_w7x3n"), SubResource("Resource_v15ne")])
+
+[node name="OceanFloor" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(8000, 0, 0, 0, 1, 0, 0, 0, 8000, 0, -350, 0)
+mesh = SubResource("PlaneMesh_ewwye")
+skeleton = NodePath("../../Other_Designers")
+surface_material_override/0 = SubResource("ShaderMaterial_0wqrp")
+script = SubResource("GDScript_0qusm")
+
+[node name="Environment" type="Node" parent="."]
+
+[node name="Light" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(0.877037, -0.278375, 0.391552, 0, 0.815017, 0.579437, -0.480422, -0.508188, 0.7148, 0, 23.7697, 0)
+light_energy = 1.2
+shadow_enabled = true
+directional_shadow_max_distance = 2000.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_mh5lb")
+
+[node name="UnderwaterFog" type="FogVolume" parent="Environment"]
+shape = 4
+material = SubResource("FogMaterial_tygyu")
+script = SubResource("GDScript_i1c2g")
+
+[connection signal="updated_lod" from="Model/WaterMaterialDesigner" to="Model" method="_on_water_material_designer_updated_lod"]
