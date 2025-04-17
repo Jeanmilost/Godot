@@ -1,9 +1,10 @@
-[gd_scene load_steps=27 format=3 uid="uid://cnmdq3bwax2d4"]
+[gd_scene load_steps=28 format=3 uid="uid://cnmdq3bwax2d4"]
 
 [ext_resource type="Script" path="res://addons/boujie_water_shader/prefabs/ocean_prefab.gd" id="1_ujlod"]
 [ext_resource type="Material" uid="uid://cu46b100244nd" path="res://addons/boujie_water_shader/prefabs/deep_ocean_material.tres" id="2_ku4ig"]
 [ext_resource type="Script" path="res://addons/boujie_water_shader/types/water_material_designer.gd" id="3_sjwli"]
 [ext_resource type="Script" path="res://addons/boujie_water_shader/types/gerstner_wave.gd" id="4_bvjsy"]
+[ext_resource type="Texture2D" uid="uid://cjcxqbjq6jj8o" path="res://assets/textures/sky/overcast_soil_puresky_4k.exr" id="5_3ewwx"]
 
 [sub_resource type="Resource" id="Resource_h6ky8"]
 script = ExtResource("4_bvjsy")
@@ -192,7 +193,6 @@ void fragment() {
 "
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_igmye"]
-load_path = "res://.godot/imported/Sand.png-85ed17ac5b6334e2f77e493ffa3f725e.s3tc.ctex"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0wqrp"]
 render_priority = 0
@@ -234,30 +234,30 @@ func _ready():
 	_update_drop_params()
 "
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3moa1"]
-sky_top_color = Color(0.0470588, 0.454902, 0.976471, 1)
-sky_horizon_color = Color(0.556863, 0.823529, 0.909804, 1)
-sky_curve = 0.251337
-ground_bottom_color = Color(0.188235, 0.517647, 0.92549, 1)
-ground_horizon_color = Color(0.513726, 0.85098, 1, 1)
-ground_curve = 0.0743257
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_4b66p"]
+panorama = ExtResource("5_3ewwx")
 
 [sub_resource type="Sky" id="Sky_grlw4"]
-sky_material = SubResource("ProceduralSkyMaterial_3moa1")
+sky_material = SubResource("PanoramaSkyMaterial_4b66p")
 
 [sub_resource type="Environment" id="Environment_mh5lb"]
 background_mode = 2
 sky = SubResource("Sky_grlw4")
+sky_rotation = Vector3(0, 1.88496, 0)
 ambient_light_source = 3
-ambient_light_color = Color(0.505882, 0.505882, 0.505882, 1)
-ambient_light_sky_contribution = 0.49
+ambient_light_color = Color(0.494118, 0.666667, 0.854902, 1)
+ambient_light_sky_contribution = 0.55
+ambient_light_energy = 0.6
 reflected_light_source = 2
 tonemap_mode = 2
+tonemap_exposure = 0.5
+tonemap_white = 2.0
+fog_enabled = true
 fog_sun_scatter = 0.06
 fog_density = 0.0005
 fog_aerial_perspective = 1.0
 volumetric_fog_enabled = true
-volumetric_fog_density = 0.0
+volumetric_fog_density = 0.002
 volumetric_fog_length = 500.39
 
 [sub_resource type="FogMaterial" id="FogMaterial_tygyu"]
@@ -312,7 +312,10 @@ script = SubResource("GDScript_0qusm")
 
 [node name="Light" type="DirectionalLight3D" parent="Environment"]
 transform = Transform3D(0.877037, -0.278375, 0.391552, 0, 0.815017, 0.579437, -0.480422, -0.508188, 0.7148, 0, 23.7697, 0)
-light_energy = 1.2
+light_color = Color(0.733133, 0.863227, 0.925712, 1)
+light_energy = 0.8
+light_indirect_energy = 1.5
+light_volumetric_fog_energy = 1.5
 shadow_enabled = true
 directional_shadow_max_distance = 2000.0
 
