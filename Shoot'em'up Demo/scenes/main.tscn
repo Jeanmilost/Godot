@@ -1,10 +1,12 @@
-[gd_scene load_steps=17 format=3 uid="uid://doan6fo577rk4"]
+[gd_scene load_steps=19 format=3 uid="uid://doan6fo577rk4"]
 
 [ext_resource type="Script" path="res://scripts/camera.gd" id="1_lw3oy"]
 [ext_resource type="PackedScene" uid="uid://cnmdq3bwax2d4" path="res://scenes/ocean.tscn" id="2_rcnpr"]
 [ext_resource type="PackedScene" uid="uid://befol6m5me0ib" path="res://assets/models/landscape/coast cliff/coast.glb" id="5_grcex"]
+[ext_resource type="PackedScene" uid="uid://bb5d44f3nh5yb" path="res://assets/models/landscape/coast cliff part 2/coast.glb" id="5_ke3o6"]
 [ext_resource type="PackedScene" uid="uid://ba17x63ox3pf2" path="res://scenes/player.tscn" id="5_t2sfl"]
 [ext_resource type="PackedScene" uid="uid://bxfglmuaja5h5" path="res://assets/models/landscape/start rock/rock.glb" id="5_vfc6h"]
+[ext_resource type="PackedScene" uid="uid://wga4vfps8xqm" path="res://assets/models/landscape/coast cliff part 3/coast.glb" id="6_rjdr2"]
 
 [sub_resource type="Curve" id="Curve_k5xa3"]
 max_value = 0.3
@@ -81,5 +83,14 @@ draw_pass_1 = SubResource("TubeTrailMesh_twotm")
 [node name="coast" parent="." instance=ExtResource("5_grcex")]
 transform = Transform3D(-2.18557e-07, 0, 5, 0, 5, 0, -5, 0, -2.18557e-07, -125, -3.75, -600)
 
+[node name="coast2" parent="." instance=ExtResource("5_ke3o6")]
+transform = Transform3D(-2.18557e-07, 0, 5, 0, 5, 0, -5, 0, -2.18557e-07, -145.85, -7.6, -869.25)
+
+[node name="coast3" parent="." instance=ExtResource("6_rjdr2")]
+transform = Transform3D(-2.18557e-07, 0, 5, 0, 5, 0, -5, 0, -2.18557e-07, -118.249, -13.9829, -1206.77)
+
 [node name="rock" parent="." instance=ExtResource("5_vfc6h")]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -163.516, 0, -342.82)
+
+[node name="rock2" parent="." instance=ExtResource("5_vfc6h")]
+transform = Transform3D(-8, 0, -6.99382e-07, 0, 8, 0, 6.99382e-07, 0, -8, -129.738, -3.43416, -985.481)

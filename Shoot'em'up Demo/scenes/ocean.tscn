@@ -304,7 +304,6 @@ uv_waves = Array[ExtResource("4_bvjsy")]([SubResource("Resource_w7x3n"), SubReso
 [node name="OceanFloor" type="MeshInstance3D" parent="Model"]
 transform = Transform3D(8000, 0, 0, 0, 1, 0, 0, 0, 8000, 0, -350, 0)
 mesh = SubResource("PlaneMesh_ewwye")
-skeleton = NodePath("../../Other_Designers")
 surface_material_override/0 = SubResource("ShaderMaterial_0wqrp")
 script = SubResource("GDScript_0qusm")
 
