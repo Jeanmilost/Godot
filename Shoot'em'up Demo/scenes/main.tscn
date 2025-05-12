@@ -1,12 +1,16 @@
-[gd_scene load_steps=19 format=3 uid="uid://doan6fo577rk4"]
+[gd_scene load_steps=23 format=3 uid="uid://doan6fo577rk4"]
 
 [ext_resource type="Script" path="res://scripts/camera.gd" id="1_lw3oy"]
 [ext_resource type="PackedScene" uid="uid://cnmdq3bwax2d4" path="res://scenes/ocean.tscn" id="2_rcnpr"]
 [ext_resource type="PackedScene" uid="uid://befol6m5me0ib" path="res://assets/models/landscape/coast cliff/coast.glb" id="5_grcex"]
 [ext_resource type="PackedScene" uid="uid://bb5d44f3nh5yb" path="res://assets/models/landscape/coast cliff part 2/coast.glb" id="5_ke3o6"]
 [ext_resource type="PackedScene" uid="uid://ba17x63ox3pf2" path="res://scenes/player.tscn" id="5_t2sfl"]
-[ext_resource type="PackedScene" uid="uid://bxfglmuaja5h5" path="res://assets/models/landscape/start rock/rock.glb" id="5_vfc6h"]
+[ext_resource type="PackedScene" uid="uid://bxfglmuaja5h5" path="res://assets/models/landscape/rock/rock.glb" id="5_vfc6h"]
 [ext_resource type="PackedScene" uid="uid://wga4vfps8xqm" path="res://assets/models/landscape/coast cliff part 3/coast.glb" id="6_rjdr2"]
+[ext_resource type="PackedScene" uid="uid://by8g8d1oq0ki1" path="res://scenes/animated_tree.tscn" id="9_gvr25"]
+[ext_resource type="PackedScene" uid="uid://bcyolk6jvhb6p" path="res://scenes/lighthouse.tscn" id="9_j8lc6"]
+[ext_resource type="PackedScene" uid="uid://c5olpw00qblwu" path="res://scenes/rusty_old_truck.tscn" id="10_py6o7"]
+[ext_resource type="PackedScene" uid="uid://d3g1x6qftdy6m" path="res://scenes/animated_tree_2.tscn" id="11_2w13r"]
 
 [sub_resource type="Curve" id="Curve_k5xa3"]
 max_value = 0.3
@@ -94,3 +98,18 @@ transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -163.516, 0, -342.82)
 
 [node name="rock2" parent="." instance=ExtResource("5_vfc6h")]
 transform = Transform3D(-8, 0, -6.99382e-07, 0, 8, 0, 6.99382e-07, 0, -8, -129.738, -3.43416, -985.481)
+
+[node name="Lighthouse" parent="." instance=ExtResource("9_j8lc6")]
+transform = Transform3D(0.0600657, 0, 0.0799507, 0, 0.1, 0, -0.0799507, 0, 0.0600657, -149.876, 36.2727, -689.25)
+
+[node name="RustyOldTruck" parent="." instance=ExtResource("10_py6o7")]
+transform = Transform3D(0.814751, -0.50782, 1.75451, 0.213883, 1.93446, 0.460581, -1.81396, -2.99775e-08, 0.842357, -138.873, 39.2405, -983.592)
+
+[node name="AnimatedTree" parent="." instance=ExtResource("9_gvr25")]
+transform = Transform3D(6, 0, 0, 0, 6, 0, 0, 0, 6, -170.857, 58.4735, -342.589)
+
+[node name="AnimatedTree2" parent="." instance=ExtResource("11_2w13r")]
+transform = Transform3D(-5.72652, -2.68994, 7.74411, -3.47437, 9.35239, 0.679391, -7.42534, -2.30154, -6.29025, -141.448, 37.7851, -797.747)
+
+[node name="AnimatedTree3" parent="." instance=ExtResource("9_gvr25")]
+transform = Transform3D(4.94975, 0, 4.94975, 0, 7, 0, -4.94975, 0, 4.94975, -124.62, 32.5445, -1109.03)

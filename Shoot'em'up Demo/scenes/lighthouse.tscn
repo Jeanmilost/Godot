@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bcyolk6jvhb6p"]
+
+[ext_resource type="PackedScene" uid="uid://hy5h141183na" path="res://assets/models/landscape/lighthouse/lighthouse.glb" id="1_ox6p1"]
+
+[node name="Lighthouse" type="Node3D"]
+
+[node name="model" parent="." instance=ExtResource("1_ox6p1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -29.2644, 0)
