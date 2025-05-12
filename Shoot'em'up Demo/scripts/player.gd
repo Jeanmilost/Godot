@@ -24,4 +24,4 @@ func _physics_process(delta):
 
 	# limit the item position into the screen
 	position.x = clamp(position.x, -45, 45)
-	position.y = clamp(position.y,  0,  20) 
+	position.y = clamp(position.y, -5,  20) 
