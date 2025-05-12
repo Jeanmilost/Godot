@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://ba8tiig8bngn1"]
+
+[ext_resource type="PackedScene" uid="uid://bffan161ddfvs" path="res://assets/models/landscape/ancient dome/ancient_dome.glb" id="1_2mfd1"]
+
+[node name="AncientDome" type="Node3D"]
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("1_2mfd1")]
