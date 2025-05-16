@@ -115,5 +115,8 @@ transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -163.516, 0, -342.82)
 [node name="rock2" parent="." instance=ExtResource("5_vfc6h")]
 transform = Transform3D(-8, 0, -6.99382e-07, 0, 8, 0, 6.99382e-07, 0, -8, -129.738, -3.43416, -985.481)
 
+[node name="rock3" parent="." instance=ExtResource("5_vfc6h")]
+transform = Transform3D(-6.07299, 0, -5.20757, 0, 8, 0, 5.20757, 0, -6.07299, -122.132, 2.21392, -1455.49)
+
 [node name="RustyOldTruck" parent="." instance=ExtResource("10_py6o7")]
 transform = Transform3D(0.814751, -0.50782, 1.75451, 0.213883, 1.93446, 0.460581, -1.81396, -2.99775e-08, 0.842357, -138.873, 39.2405, -983.592)
